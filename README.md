@@ -1,12 +1,12 @@
 Standbot
 ========
 
-> A simple and usefull standup bot
+> A simple and usefull stand-up bot
 
 ## Features
 
 * Contacts all team members each workday at 10 and ask for a report
-* Check you report, og the report for all members, either in chat or online
+* Check you report, or the report for all members, either in chat or online
 
 
 # Development locally
