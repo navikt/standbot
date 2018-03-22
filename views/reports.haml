@@ -1,0 +1,31 @@
+!!! 5
+%html
+  %head
+    %title= "Reports"
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    %link{:crossorigin => "anonymous", :href => "https://unpkg.com/purecss@1.0.0/build/pure-min.css", :integrity => "sha384-", :rel => "stylesheet"}
+    %link{:href => "https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/stylesheet.css", :rel => "stylesheet"}
+
+  %body
+    %h2
+      = locals['standup_date']
+
+    %table.pure-table.pure-table-horizontal
+      %thead
+        %tr
+          %th Navn
+          %th Igår
+          %th Idag
+          %th Problem
+      %tbody
+        - locals['reports'].each do |standup|
+          %tr
+          %td
+            = standup.name
+          %td
+            = standup.yesterday
+          %td
+            = standup.today
+          %td
+            = standup.problems
