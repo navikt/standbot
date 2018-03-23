@@ -4,6 +4,14 @@ require 'httparty'
 module Standbot
   class StandWeb < Sinatra::Application
     get '/api/standup/?' do
+      # old school debug
+      p headers
+      p headers['Appengine-Cron']
+      p request
+      p request.ip
+      p request.env['REMOTE_ADDR'].split(',').first
+      # end
+
       # TODO: check if it's time for standup, should be able to change this
       # with an environment variable.
       # Maybe we should use some form of API token here?

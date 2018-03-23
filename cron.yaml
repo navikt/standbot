@@ -2,4 +2,5 @@
 cron:
   - description: "checks if it's time for a standup"
     url: /api/standup
-    schedule: "0 10 * * 1-5"
+    schedule: every monday,tuesday,wednesday,thursday,friday 10:00
+    timezone: Europe/Oslo
