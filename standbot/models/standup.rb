@@ -1,13 +1,13 @@
 class Standup < Sequel::Model
-  # plugin :validation_helpers
+  def self.dates(limit=nil)
+    standups = Standup.distinct(Sequel.function(:date, :created_at)).order(Sequel.desc(Sequel.function(:date, :created_at)))
+    return standups if limit.nil?
+    standups.limit(limit)
+  end
 
-  # def validate
-  #   validates_presence [:name, :year]
-  #   validates_includes 1..10, :rating
-  #   if genre == "Horror"
-  #     validates_presence :rated
-  #   end
-  # end
+  def self.previous(date)
+    dates().where(Sequel.function(:date, :created_at) < date).first
+  end
 
   def pretty_report
     message = ''
