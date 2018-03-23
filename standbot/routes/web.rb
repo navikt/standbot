@@ -3,7 +3,7 @@ require 'date'
 module Standbot
   class StandWeb < Sinatra::Application
     get '/' do
-      'Math is good for you.'
+      haml(:index)
     end
 
     get '/standup/:date/?' do

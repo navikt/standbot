@@ -1,0 +1,21 @@
+!!! 5
+%html
+  %head
+    %title= "Reports"
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    %link{:crossorigin => "anonymous", :href => "https://unpkg.com/purecss@1.0.0/build/pure-min.css", :integrity => "sha384-", :rel => "stylesheet"}
+    %link{:href => "https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css", :rel => "stylesheet"}
+    %link{:href => "/stylesheet.css", :rel => "stylesheet"}
+
+  %body
+    .header
+      %h2
+        &num;aura sin standup-bot
+
+    .content
+      %ul
+        - Standup.dates(10).each do |standup|
+          %li
+            %a{href: "/standup/#{standup.created_at.to_date}"}
+              = standup.created_at.to_date
+        
