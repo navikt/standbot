@@ -8,24 +8,28 @@
     %link{:href => "/stylesheet.css", :rel => "stylesheet"}
 
   %body
-    %h2
-      = locals['standup_date']
+    .header
+      %h2
+        = locals['standup_date']
 
-    %table.pure-table.pure-table-horizontal
-      %thead
-        %tr
-          %th Navn
-          %th Igår
-          %th Idag
-          %th Problem
-      %tbody
+    .content
+      .pure-g
         - locals['reports'].each do |standup|
-          %tr
-          %td
-            = standup.name
-          %td
-            = standup.yesterday
-          %td
-            = standup.today
-          %td
-            = standup.problems
+          .pure-u
+            .column
+              .row.pure-g
+                .pure-u
+                  - avatar_url = standup.avatar_url ? standup.avatar_url : "/images/dummy-profile-pic.png"
+                  %img.avatar{width: "64", height: "64", alt: "#{standup.name}'s avatar", src: avatar_url}
+                .pure-u
+                  %h4.name
+                    = standup.name
+              .row#yesterday
+                %strong I går:
+                = standup.yesterday
+              .row#today
+                %strong I dag:
+                = standup.today
+              .row#problem
+                %strong Problem(er):
+                = standup.problems

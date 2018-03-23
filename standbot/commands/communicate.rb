@@ -45,12 +45,12 @@ module Standbot
 
       command 'igår', 'idag', 'problem', 'i dag', 'i går', 'yesterday', 'today' do |client, data, match|
         id = data.user
-        name = client.users[id]['real_name']
+        user = client.users[id]
         command = command_to_sym(match['command'])
         message = match['expression']
         standup = Standup.first(slackid: id, Sequel.function(:date, :created_at) => Date.today)
         if standup.nil?
-          standup = Standup.create(:slackid => id, :name => name, command => message)
+          standup = Standup.create(slackid: id, name: user.real_name, command => message, avatar_url: user.profile.image_72)
         else
           standup[command] = message
           standup[:updated_at] = Time.now
