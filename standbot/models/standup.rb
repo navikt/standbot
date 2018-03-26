@@ -9,6 +9,10 @@ class Standup < Sequel::Model
     dates().where(Sequel.function(:date, :created_at) < date).first
   end
 
+  def self.next(date)
+    dates().where(Sequel.function(:date, :created_at) > date).first
+  end
+
   def pretty_report
     message = ''
     message += "I går: #{yesterday}\n" if yesterday

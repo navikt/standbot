@@ -1,25 +1,33 @@
 !!! 5
 %html
   %head
-    %title= "Reports"
-    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-    %link{:crossorigin => "anonymous", :href => "https://unpkg.com/purecss@1.0.0/build/pure-min.css", :integrity => "sha384-", :rel => "stylesheet"}
-    %link{:href => "https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css", :rel => "stylesheet"}
-    %link{:href => "/stylesheet.css", :rel => "stylesheet"}
+    = haml(:_header, :locals => {'title' => 'Reports'})
 
   %body
     - standup_date = locals['standup_date']
-    - previous = Standup.previous(standup_date)
+    - previous_standup = Standup.previous(standup_date)
+    - next_standup = Standup.next(standup_date)
     .header
       %h2
         = standup_date
       %h4
-        - if previous
-          %a{href: "/standup/#{previous.created_at.to_date}"}<
+        - if previous_standup
+          %a{href: "/standup/#{previous_standup.created_at.to_date}"}<
             previous
-          |
-        %a{href: "/standup/#{Date.today}"}<
-          Today
+        - else
+          previous
+        |
+        - if next_standup
+          %a{href: "/standup/#{next_standup.created_at.to_date}"}<
+            next
+        - else
+          next
+        |
+        - if standup_date != Date.today.to_s
+          %a{href: "/standup/#{Date.today}"}<
+            today
+        - else
+          today
 
     .content
       .pure-g
