@@ -34,8 +34,8 @@ module Standbot
       year = today.year
       api_url = "https://webapi.no/api/v1/holydays/#{year}"
       response = HTTParty.get(api_url)
-      parsed_response = response.parsed_response
-      if parsed_response['statusCode'] == 200
+      if response.success?
+        parsed_response = response.parsed_response
         parsed_response['data'].each do |data|
           return true if Date.strptime(data['date'], '%Y-%m-%d').to_date == Date.today
         end
