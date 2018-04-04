@@ -1,0 +1,91 @@
+body {
+    padding: 1.5em;
+    background: #eee;
+}
+
+.header {
+}
+
+.pull-right {
+    float: right;
+}
+
+.column {
+    padding: 1em;
+    width: 30em;
+}
+
+.row {
+    background: #fff;
+    padding: 0.9em 1em;
+    border-bottom: 1px solid #ddd;
+    border-left: 6px solid transparent;
+}
+#yesterday.row {
+    border-left: 6px solid lightblue;
+}
+#today.row {
+    border-left: 6px solid lightgreen;
+}
+#problem.row {
+    border-left: 6px solid lightcoral;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin-right: 0.5em;
+}
+
+#searchMembers {
+    background-image: url('/images/searchicon.png');
+    background-position: 0.6em 0.6em;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 1em;
+}
+
+#membersList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.memberRow {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+    width: 100%;
+}
+
+.memberRow:hover:not(.header) {
+    background-color: #eee;
+}
+
+#teamInfo {
+    background-color: #ddd;
+    margin: 0.5em;
+    padding: 1em;
+}
+
+#teamInfo .avatar {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#teamTitle {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#teamDesc {
+    text-align: center;
+}

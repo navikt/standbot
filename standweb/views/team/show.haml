@@ -1,0 +1,62 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, :locals => {'title' => 'Standbot'})
+
+  %body
+    - team = Team.find(:name => locals['team_name'])
+    .header
+      %h1
+        = team.name
+      %h3
+        Lorem Ipsum
+
+    %p.menu
+      %a{href: "/"}
+        Home
+
+    .pure-u
+      - if team.channel
+        %strong Channel:
+        = "##{team.channel.name}"
+
+    %h4 Medlemmer
+
+    .pure-g
+      .pure-u-1-3
+        %ul#membersList
+          - if team.members.empty?
+            %li Ingen medlemer
+          - else
+            - team.members.each do |member|
+              %li{id: member.id, class: "memberRow"}
+                %img.avatar{width: "32", height: "32", alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+                %span
+                  = member.full_name
+                %button.pure-button.pull-right{onClick: "remove_member('#{member.id}');"}
+                  Slett
+
+    .pure-u
+      %a{href: "/members/#{team.name}/add"}
+        Legg til medlem
+
+    %h4 Stand-ups
+    %ul
+      - if team.standups.empty?
+        %li Ingen standups
+      - else
+        - team.standups.each do |standup|
+          %li
+            - date = standup.created_at.to_date
+            %a{href: "/standup/#{team.name}/#{date}"}
+              = date
+                
+    :javascript
+      function remove_member(id) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.open("POST", "/members/#{team_name}/remove", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + id);
+          let row = document.getElementById(id);
+          row.parentElement.removeChild(row);
+      }

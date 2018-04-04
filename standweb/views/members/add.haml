@@ -1,0 +1,54 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, :locals => {'title' => 'Add member to team'})
+
+  %body
+    - team_name = locals['team_name']
+    .header
+      %h1
+        %a{href: "/team/#{team_name}"}
+          = team_name
+
+      %h3 Legg til medlem
+
+    .pure-g
+      .pure-u-1-6
+        %input#searchMembers{:onkeyup => "searchInMembers()", :placeholder => "Search for names..", :type => "text"}/
+    .pure-g
+      .pure-u-1-3
+        %ul#membersList
+          - locals['members'].each do |member|
+            %li{id: member.id, class: "memberRow"}
+              %img.avatar{width: "32", height: "32", alt: "#{member.profile.full_name}'s avatar", src: member.profile.image_32}
+              %span
+                = member.profile.real_name
+              #button.pure-button.pull-right{onClick: "add_member('#{member.id}');"}
+                Legg til
+                
+    :javascript
+      function add_member(slack_id) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.open("POST", "/members/#{team_name}/add", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + slack_id);
+          let row = document.getElementById(slack_id);
+          row.parentElement.removeChild(row);
+      }
+
+      function searchInMembers() {
+          let input = document.getElementById('searchMembers');
+          let filter = input.value.toUpperCase();
+          let ul = document.getElementById("membersList");
+          let li = ul.getElementsByTagName('li');
+      
+          // Loop through all list items, and hide those who don't match the search query
+          for (let i = 0; i < li.length; i++) {
+              let a = li[i].getElementsByTagName("span")[0];
+              if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                  li[i].style.display = "";
+              } else {
+                  li[i].style.display = "none";
+              }
+          }
+      }

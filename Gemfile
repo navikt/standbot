@@ -11,6 +11,7 @@ gem 'pg', '~> 1.0'
 gem 'puma', '~> 3.11', '>= 3.11.2'
 gem 'sequel', '~> 5.6'
 gem 'sinatra', '~> 2.0', '>= 2.0.1'
+gem 'sinatra-contrib', '~> 2.0', '>= 2.0.1'
 gem 'slack-ruby-bot', '~> 0.10.5'
 
 group :development, :test do

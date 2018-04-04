@@ -1,0 +1,23 @@
+- report = locals['report']
+- member = Member.find(:id => report.member_id)
+.pure-u
+  .column
+    .row.pure-g
+      .pure-u
+        - avatar_url = member.avatar_url ? member.avatar_url : "/images/dummy-profile-pic.png"
+        %img.avatar{width: "64", height: "64", alt: "#{member.full_name}'s avatar", src: avatar_url}
+      .pure-u
+        %h4.name
+          = member.full_name
+    - if report.yesterday
+      .row#yesterday
+        %strong I går:
+        = report.yesterday
+    - if report.today
+      .row#today
+        %strong I dag:
+        = report.today
+    - if report.problem
+      .row#problem
+        %strong Problem(er):
+        = report.problem

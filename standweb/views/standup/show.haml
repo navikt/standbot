@@ -1,0 +1,23 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, :locals => {'title' => 'Stand-ups'})
+
+  %body
+    .header
+      %h1
+        %a{href: "/team/#{team_name}"}
+          = team_name
+
+    = haml(:'standup/_menu', :locals => locals)
+
+    .content
+      .pure-g
+        - reports = locals['reports']
+        - if reports.nil? or reports.empty?
+          .pure-u.column
+            No reports for now
+        - else
+          - reports.each do |report|
+            - if report.updated_at
+              = haml(:'standup/_report', :locals => {'report' => report})

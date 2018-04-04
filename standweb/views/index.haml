@@ -1,0 +1,27 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, :locals => {'title' => 'Standbot'})
+
+  %body
+    .header
+      %h1 NAV sin stand-up bot
+
+    .content
+      .pure-g
+        - Team.active.each do |team|
+          .pure-u-1-6#teamInfo
+            - avatar_url = "/images/dummy-profile-pic.png"
+            %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: avatar_url}
+            %h4#teamTitle
+              %a{href: "/team/#{team.name}"}
+                = team.name
+            %p#teamDesc
+              Lorem ipsum
+
+        .pure-u-1-6#teamInfo
+          %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
+          %h4#teamTitle
+            %a{href: "/team/new"} Add team
+          %p#teamDesc
+            Create a new team

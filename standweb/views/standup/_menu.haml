@@ -1,0 +1,25 @@
+- team_name = locals['team_name']
+- standup_date = locals['standup_date']
+- previous_standup = Standup.previous(team_name, standup_date)
+- next_standup = Standup.next(team_name, standup_date)
+.header
+  %h2
+    = standup_date
+  %h4
+    - if previous_standup
+      %a{href: "/standup/#{team_name}/#{previous_standup.created_at.to_date}"}<
+        previous
+    - else
+      previous
+    |
+    - if next_standup
+      %a{href: "/standup/#{team_name}/#{next_standup.created_at.to_date}"}<
+        next
+    - else
+      next
+    |
+    - if standup_date != Date.today.to_s
+      %a{href: "/standup/#{team_name}"}<
+        today
+    - else
+      today
