@@ -1,7 +1,6 @@
 Standbot
 ========
-
-> A simple and usefull stand-up bot
+> A simple and useful stand-up bot
 
 ## Features
 
