@@ -1,14 +1,17 @@
 Standbot
 ========
+
 > A simple and useful stand-up bot
+
 
 ## Features
 
+* Create stand-up teams from the list of members in you Slack
 * Contacts all team members each workday at 10 and ask for a report
-* Check you report, or the report for all members, either in chat or online
+* Shows a report for all members online
 
 
-# Development locally
+# Develop locally
 
 Run a Docker container with postgres:
 ```bash
@@ -20,6 +23,6 @@ If you already have a container running, you can add a new database with the fol
 docker exec -it postgres psql -U postgres -c "CREATE DATABASE standbot"
 ```
 
-Then install `Ruby-2.3.6` and install Gem's with `bundle install'.
+Then install `Ruby-2.3.6` and install Gem's with `bundle install`.
 
 Start the app with `foreman start`. It will look for `SLACK_API_TOKEN` in your `.env`-file.
