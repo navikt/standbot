@@ -11,8 +11,8 @@ module Standweb
         standup_date = params['date']
         team = Team.find(name: team_name)
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => standup_date)
-        reports = standup.nil? ? [] : standup.reports 
-        haml(:'standup/show', locals: {'team_name' => team_name, 'standup_date' => standup_date, 'reports' => reports})
+        reports = standup.nil? ? [] : standup.reports
+        haml(:'standup/show', locals: { 'team_name' => team_name, 'standup_date' => standup_date, 'reports' => reports })
       end
     end
   end

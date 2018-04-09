@@ -8,21 +8,21 @@ class Standup < Sequel::Model
   end
 
   def self.todays_reports(team_name)
-    team = Team.find(:name => team_name)
+    team = Team.find(name: team_name)
     return nil if team.nil?
     standup = Standup.find(:team_id => team.id, Sequel.function(:date, :created_at) => Date.today)
-    Report.where(:standup_id => standup.id).where(Sequel.function(:date, :created_at) => Date.today)
+    Report.where(standup_id: standup.id).where(Sequel.function(:date, :created_at) => Date.today)
   end
 
   def self.previous(team_name, date)
-    team = Team.find(:name => team_name)
+    team = Team.find(name: team_name)
     return nil if team.nil?
-    Standup.where(:team_id => team.id).where(Sequel.function(:date, :created_at) < date).order(:created_at).last
+    Standup.where(team_id: team.id).where(Sequel.function(:date, :created_at) < date).order(:created_at).last
   end
 
   def self.next(team_name, date)
-    team = Team.find(:name => team_name)
+    team = Team.find(name: team_name)
     return nil if team.nil?
-    Standup.where(:team_id => team.id).where(Sequel.function(:date, :created_at) > date).order(:created_at).first
+    Standup.where(team_id: team.id).where(Sequel.function(:date, :created_at) > date).order(:created_at).first
   end
 end

@@ -14,7 +14,7 @@ module Standweb
 
         unless channel_name.empty?
           channel = Channel.find(name: channel_name)
-          channel = Channel.create(name: channel_name) unless channel
+          channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
         end
         team.save
@@ -24,7 +24,7 @@ module Standweb
 
       get '/:team_name/?' do
         team_name = params['team_name']
-        haml(:'team/show', locals: {'team_name' => team_name})
+        haml(:'team/show', locals: { 'team_name' => team_name })
       end
     end
   end

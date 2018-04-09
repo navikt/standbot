@@ -36,7 +36,7 @@ module Standbot
           client.say(text: 'Du ser ikke ut til å være registrert i noen team', channel: data.channel)
           return
         end
-          
+
         team = Team[membership.team_id]
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
         if standup.nil?

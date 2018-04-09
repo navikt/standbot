@@ -8,9 +8,9 @@ module Standweb
     namespace '/api/?' do
       namespace '/v1/?' do
         get '/standup/?' do
-          logger.info("Time for standup")
+          logger.info('Time for standup')
           if red_day?
-            logger.info("No standup on red days")
+            logger.info('No standup on red days')
             return 'RED_DAY'
           end
 
@@ -18,13 +18,13 @@ module Standweb
           Team.active.each do |team|
             logger.info("Standup for #{team.name}")
             standup = Standup.find(Sequel.function(:date, :created_at) => Date.today)
-            standup = Standup.new unless standup
+            standup ||= Standup.new
             team.add_standup(standup)
             standup.save
 
             team.members.each do |member|
               unless Report.find(:member_id => member.id, :standup_id => standup.id, Sequel.function(:date, :created_at) => Date.today)
-                Report.create(:member_id => member.id, :standup_id => standup.id)
+                Report.create(member_id: member.id, standup_id: standup.id)
               end
 
               begin
@@ -44,8 +44,8 @@ module Standweb
       end
     end
 
-    def red_day?(date=nil)
-      date = Date.today unless date
+    def red_day?(date = nil)
+      date ||= Date.today
       year = date.year
       api_url = "https://webapi.no/api/v1/holydays/#{year}"
       response = HTTParty.get(api_url)
@@ -55,7 +55,7 @@ module Standweb
           return true if Date.strptime(data['date'], '%Y-%m-%d').to_date == date
         end
       end
-      return false
+      false
     end
   end
 end

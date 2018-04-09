@@ -5,9 +5,9 @@ module Standweb
         team_name = params['team_name']
         team = Team.find(name: team_name)
         client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
-        members = client.users_list.members.select {|member| not member.deleted}
-        members.reject! {|member| team.members_name.include?(member.profile.real_name)}
-        haml(:'members/add', locals: {'team_name' => team_name, 'members' => members})
+        members = client.users_list.members.reject(&:deleted)
+        members.reject! { |member| team.members_name.include?(member.profile.real_name) }
+        haml(:'members/add', locals: { 'team_name' => team_name, 'members' => members })
       end
 
       post '/:team_name/add/?' do
@@ -15,10 +15,10 @@ module Standweb
         team = Team.find(name: team_name)
         slack_id = params['id']
         member = Member.find(slack_id: slack_id)
-        redirect("/#{team_name}") if member and team.members.include?(member)
+        redirect("/#{team_name}") if member && team.members.include?(member)
 
         if member
-           team.add_member(member)
+          team.add_member(member)
         else
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
           user = client.users_info(user: slack_id).user

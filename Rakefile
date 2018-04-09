@@ -16,7 +16,7 @@ namespace :db do
   def connect_to_db
     return @db unless @db.nil?
     url = ENV['DATABASE_URL'] ? ENV['DATABASE_URL'] : 'postgres://postgres:postgres@localhost:5432/standbot'
-    return Sequel.connect(url)
+    Sequel.connect(url)
   end
 
   desc 'Prints current schema version'

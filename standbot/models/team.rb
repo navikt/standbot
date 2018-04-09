@@ -8,6 +8,6 @@ class Team < Sequel::Model
   end
 
   def members_name
-    members.map {|member| member.full_name}
+    members.map(&:full_name)
   end
 end
