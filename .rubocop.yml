@@ -1,5 +1,7 @@
 ---
-Metrics/LineLength:
-  Max: 130
 Documentation:
     Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/LineLength:
+  Max: 130

@@ -20,9 +20,8 @@ module Standbot
         end
       end
 
-      command /(i\s?(går|dag)|problem|(yester|to)day)/i do |client, data, match|
+      command(/(i\s?(går|dag)|problem|(yester|to)day)/i) do |client, data, match|
         user_id = data.user
-        user = client.users[user_id]
         command = command_to_sym(match['command'])
         message = match['expression']
         member = Member.find(slack_id: user_id)

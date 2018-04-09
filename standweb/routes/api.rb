@@ -23,7 +23,9 @@ module Standweb
             standup.save
 
             team.members.each do |member|
-              unless Report.find(:member_id => member.id, :standup_id => standup.id, Sequel.function(:date, :created_at) => Date.today)
+              unless Report.find(:member_id => member.id,
+                                 :standup_id => standup.id,
+                                 Sequel.function(:date, :created_at) => Date.today)
                 Report.create(member_id: member.id, standup_id: standup.id)
               end
 
@@ -32,7 +34,9 @@ module Standweb
                 im_channel_id = im && im['channel'] && im['channel']['id']
                 next unless im_channel_id
                 logger.info("Notifying #{member.full_name}")
-                client.chat_postMessage(text: "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', 'problem'\nFor eksempel `i går satt jeg i møter hele dagen`", channel: im_channel_id)
+                client.chat_postMessage(text: "Tid for standup!\nRapporter tilbake med 'i går', 'i dag'," \
+                                        "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`",
+                                        channel: im_channel_id)
               rescue Slack::Web::Api::Errors::SlackError => e
                 puts e
               end
@@ -50,8 +54,7 @@ module Standweb
       api_url = "https://webapi.no/api/v1/holydays/#{year}"
       response = HTTParty.get(api_url)
       if response.success?
-        parsed_response = response.parsed_response
-        parsed_response['data'].each do |data|
+        response.parsed_response['data'].each do |data|
           return true if Date.strptime(data['date'], '%Y-%m-%d').to_date == date
         end
       end
