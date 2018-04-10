@@ -12,12 +12,15 @@
     - if report.yesterday
       .row#yesterday
         %strong I går:
-        = report.yesterday
+        :escaped
+          #{report.yesterday}
     - if report.today
       .row#today
         %strong I dag:
-        = report.today
+        :escaped
+          #{report.today}
     - if report.problem
       .row#problem
         %strong Problem(er):
-        = report.problem
+        :escaped
+          #{report.problem}
