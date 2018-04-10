@@ -11,10 +11,10 @@
       .pure-g
         - Team.active.each do |team|
           .pure-u-1-6#teamInfo
-            - avatar_url = "/images/dummy-profile-pic.png"
-            %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: avatar_url}
-            %h4#teamTitle
-              %a{href: "/team/#{team.name}"}
+            %a{href: "/team/#{team.name}"}
+              - avatar_url = "/images/dummy-profile-pic.png"
+              %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: avatar_url}
+              %h4#teamTitle
                 = team.name
             %p#teamDesc
               Lorem ipsum
