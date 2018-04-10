@@ -8,6 +8,7 @@ module Standweb
       post '/create/?' do
         name = params['name']
         redirect("/team/#{name}") if Team.find(name: name)
+        redirect("/new") if name.empty?
         channel_name = params['channel'].tr('#', '')
         avatar_url = params['avatar_url']
         team = Team.new(name: name)
