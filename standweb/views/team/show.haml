@@ -50,8 +50,36 @@
             - date = standup.created_at.to_date
             %a{href: "/standup/#{team.name}/#{date}"}
               = date
+
+
+    - if team.active
+      %button.pure-button#teamStatus{onClick: "deactivate('#{team.name}')"}
+        Deaktiver
+    - else
+      %button.pure-button#teamStatus{onClick: "activate('#{team.name}')"}
+        Aktiver
                 
     :javascript
+      function activate(team_name) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.open("POST", "/team/#{team_name}/activate", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send();
+          let button = document.getElementById('teamStatus');
+          button.innerText = "Deactivate"
+          button.onClick = function(){ deactivate(team_name); };
+      }
+
+      function deactivate(team_name) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.open("POST", "/team/#{team_name}/deactivate", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send();
+          let button = document.getElementById('teamStatus');
+          button.innerText = "Activate"
+          button.onClick = function(){ activate(team_name); };
+      }
+
       function remove_member(id) {
           let xhttp = new XMLHttpRequest();
           xhttp.open("POST", "/members/#{team_name}/remove", true);

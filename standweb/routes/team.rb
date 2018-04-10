@@ -22,6 +22,20 @@ module Standweb
         redirect("/team/#{team.name}")
       end
 
+      post '/:team_name/activate/?' do |team_name|
+        team = Team.find(name: team_name)
+        team.active = true
+        team.save
+        redirect("/team/#{team.name}")
+      end
+
+      post '/:team_name/deactivate/?' do |team_name|
+        team = Team.find(name: team_name)
+        team.active = false
+        team.save
+        redirect("/team/#{team.name}")
+      end
+
       get '/:team_name/?' do
         team_name = params['team_name']
         haml(:'team/show', locals: { 'team_name' => team_name })
