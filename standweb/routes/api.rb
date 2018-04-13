@@ -15,6 +15,7 @@ module Standweb
           end
 
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+          notified = []
           Team.active.each do |team|
             logger.info("Standup for #{team.name}")
             standup = Standup.find(Sequel.function(:date, :created_at) => Date.today)
@@ -33,10 +34,12 @@ module Standweb
                 im = client.im_open(user: member.slack_id)
                 im_channel_id = im && im['channel'] && im['channel']['id']
                 next unless im_channel_id
+                next if notified.include?(member.full_name)
                 logger.info("Notifying #{member.full_name}")
                 client.chat_postMessage(text: "Tid for standup!\nRapporter tilbake med 'i går', 'i dag'," \
                                         "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`",
                                         channel: im_channel_id)
+                notified.append(member.full_name)
               rescue Slack::Web::Api::Errors::SlackError => e
                 puts e
               end
@@ -49,8 +52,7 @@ module Standweb
     end
 
     def red_day?(date = nil)
-      date ||= Date.today
-      year = date.year
+      year = (date || Date.today).year
       api_url = "https://webapi.no/api/v1/holydays/#{year}"
       response = HTTParty.get(api_url)
       if response.success?
