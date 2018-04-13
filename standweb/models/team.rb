@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Team < Sequel::Model
   many_to_many :members, join_table: :memberships
   one_to_many :standups

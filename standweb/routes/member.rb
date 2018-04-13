@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Standweb
   class Web < Sinatra::Base
     namespace '/members/?' do
