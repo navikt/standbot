@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'date'
+require 'rumoji'
 
 module Standbot
   module Commands
@@ -86,7 +87,7 @@ module Standbot
           report.save
         end
 
-        report.update(report_type => message)
+        report.update(report_type => slack_emoji_to_unicode(message))
         report.save
         client.say(text: "notert (for #{team.name})", channel: data.channel)
       end
@@ -103,6 +104,10 @@ module Standbot
           logger.info("Unknown command: #{cmd}")
           cmd.to_sym
         end
+      end
+
+      def self.slack_emoji_to_unicode(message)
+        return Rumoji.decode(message)
       end
     end
   end
