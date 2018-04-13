@@ -2,9 +2,10 @@
 
 source 'https://rubygems.org'
 
-ruby '2.3.6'
+ruby '2.5.1'
 
 gem 'celluloid-io', '~> 0.17.3'
+gem 'foreman', '~> 0.84.0'
 gem 'haml', '~> 5.0', '>= 5.0.4'
 gem 'httparty', '~> 0.16.1'
 gem 'pg', '~> 1.0'
@@ -16,7 +17,6 @@ gem 'slack-ruby-bot', '~> 0.10.5'
 
 group :development, :test do
   gem 'dotenv', '~> 2.2', '>= 2.2.1'
-  gem 'foreman', '~> 0.84.0'
   gem 'rake', '~> 12.3'
 end
 
