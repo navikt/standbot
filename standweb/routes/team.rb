@@ -7,18 +7,33 @@ module Standweb
       end
 
       post '/create/?' do
-        name = params['name']
-        redirect("/team/#{name}") if Team.find(name: name)
-        redirect("/new") if name.empty?
-        channel_name = params['channel'].tr('#', '')
-        avatar_url = params['avatar_url']
+        name = params['name'].strip
+        if Team.find(Sequel.ilike(:name, name))
+          flash.next['error'] = 'Team navn eksisterer'
+          redirect("/team/new")
+        end
+
+        if name.empty?
+          flash.next['error'] = 'Team navn kan ikke være blank'
+          redirect("/team/new")
+        end
+
+        channel_name = params['channel'].strip.tr('#', '')
+        description = params['description'].strip
+        avatar_url = params['avatar_url'].strip
         team = Team.new(name: name)
+        team.description = description unless description.empty?
         team.avatar_url = avatar_url unless avatar_url.empty?
 
         unless channel_name.empty?
           channel = Channel.find(name: channel_name)
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
+        end
+
+        unless team.valid?
+          flash.next['error'] = team.errors.full_messages.join('\n')
+          redirect("/team/new")
         end
         team.save
 
@@ -29,6 +44,7 @@ module Standweb
         team = Team.find(name: team_name)
         team.active = true
         team.save
+        flash.next['success'] = 'Team er reaktivert'
         redirect("/team/#{team.name}")
       end
 
@@ -36,6 +52,7 @@ module Standweb
         team = Team.find(name: team_name)
         team.active = false
         team.save
+        flash.next['success'] = 'Team er deaktivert'
         redirect("/team/#{team.name}")
       end
 

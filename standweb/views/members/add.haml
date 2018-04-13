@@ -4,6 +4,8 @@
     = haml(:_header, :locals => {'title' => 'Add member to team'})
 
   %body
+    .alert#alert
+
     - team_name = locals['team_name']
     .header
       %h1
@@ -20,20 +22,26 @@
         %ul#membersList
           - locals['members'].each do |member|
             %li{id: member.id, class: "memberRow"}
-              %img.avatar{width: "32", height: "32", alt: "#{member.profile.full_name}'s avatar", src: member.profile.image_32}
+              %img.avatar{width: "32", height: "32", alt: "#{member.profile.real_name}'s avatar", src: member.profile.image_32}
               %span
                 = member.profile.real_name
-              #button.pure-button.pull-right{onClick: "add_member('#{member.id}');"}
+              #button.pure-button.pull-right{onClick: "add_member('#{member.id}', '#{member.profile.real_name}');"}
                 Legg til
                 
     :javascript
-      function add_member(slack_id) {
+      function add_member(slack_id, name) {
           let xhttp = new XMLHttpRequest();
           xhttp.open("POST", "/members/#{team_name}/add", true);
           xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           xhttp.send("id=" + slack_id);
           let row = document.getElementById(slack_id);
           row.parentElement.removeChild(row);
+          let alert = document.getElementById('alert');
+          const element = document.createElement('div');
+          element.classList.add('flash');
+          element.classList.add('success');
+          element.innerText = 'Lagt til ' + name;
+          alert.appendChild(element);
       }
 
       function searchInMembers() {
