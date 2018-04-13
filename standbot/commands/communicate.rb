@@ -34,7 +34,7 @@ module Standbot
       def self.report_to_standup(client, data, match)
         team_name = match['team']
         report_type = command_to_sym(match['report'])
-        message = match['expression']
+        message = Rumoji.decode(match['expression'])
         slack_id = data.user
 
         member = Member.find(slack_id: slack_id)
@@ -87,7 +87,7 @@ module Standbot
           report.save
         end
 
-        report.update(report_type => slack_emoji_to_unicode(message))
+        report.update(report_type => message)
         report.save
         client.say(text: "notert (for #{team.name})", channel: data.channel)
       end
@@ -104,10 +104,6 @@ module Standbot
           logger.info("Unknown command: #{cmd}")
           cmd.to_sym
         end
-      end
-
-      def self.slack_emoji_to_unicode(message)
-        return Rumoji.decode(message)
       end
     end
   end
