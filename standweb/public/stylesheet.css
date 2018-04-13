@@ -89,3 +89,27 @@ body {
 #teamDesc {
     text-align: center;
 }
+
+.flash {
+    display: block;
+    text-align: center;
+    font-weight: normal;
+    padding: 0.77778rem 1.33333rem 0.77778rem 0.77778rem;
+    position: relative;
+    transition: opacity 300ms ease-out;
+}
+
+.alert .error {
+    background-color: #f04124;
+    color: #FFFFFF;
+}
+
+.alert .info {
+    background-color: #a0d3e8;
+    color: #4f4f4f;
+}
+
+.alert .success {
+    background-color: #43AC6A;
+    color: #FFFFFF;
+}

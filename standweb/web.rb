@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'sinatra/namespace'
 
 module Standweb
   class Web < Sinatra::Base
     enable(:logging)
+    enable(:sessions)
+    register(Sinatra::Flash)
 
     configure :production do
       set(:clean_trace, true)

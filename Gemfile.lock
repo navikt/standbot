@@ -110,6 +110,8 @@ GEM
       rack-protection (= 2.0.1)
       sinatra (= 2.0.1)
       tilt (>= 1.3, < 3)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
     slack-ruby-bot (0.10.5)
       hashie
       slack-ruby-client (>= 0.6.0)
@@ -157,6 +159,7 @@ DEPENDENCIES
   sequel (~> 5.6)
   sinatra (~> 2.0, >= 2.0.1)
   sinatra-contrib (~> 2.0, >= 2.0.1)
+  sinatra-flash (~> 0.3.0)
   slack-ruby-bot (~> 0.10.5)
   vcr (~> 4.0)
   webmock (~> 3.3)
