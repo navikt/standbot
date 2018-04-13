@@ -16,7 +16,8 @@ module Standweb
         team = Team.find(name: team_name)
         slack_id = params['id']
         member = Member.find(slack_id: slack_id)
-        redirect("/#{team_name}") if member && team.members.include?(member)
+        flash.next['info'] = "#{member.full_name} finnes fra før av"
+        redirect("/team/#{team_name}") if member && team.members.include?(member)
 
         if member
           team.add_member(member)
@@ -25,7 +26,8 @@ module Standweb
           user = client.users_info(user: slack_id).user
           team.add_member(slack_id: slack_id, full_name: user.profile.real_name, avatar_url: user.profile.image_72)
         end
-        redirect("/#{team_name}")
+        flash.next['success'] = "#{member.full_name} er lagt til"
+        redirect("/team/#{team_name}")
       end
 
       post '/:team_name/remove/?' do
@@ -33,7 +35,8 @@ module Standweb
         member_id = params['id']
         team = Team.find(name: team_name)
         team.remove_member(member_id)
-        redirect("/#{team_name}")
+        flash.next['success'] = 'Medlem er fjernet'
+        redirect("/team/#{team_name}")
       end
     end
   end
