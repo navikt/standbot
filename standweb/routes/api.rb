@@ -36,9 +36,12 @@ module Standweb
                 next unless im_channel_id
                 next if notified.include?(member.full_name)
                 logger.info("Notifying #{member.full_name}")
-                client.chat_postMessage(text: "Tid for standup!\nRapporter tilbake med 'i går', 'i dag'," \
-                                        "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`",
-                                        channel: im_channel_id)
+                message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
+                          "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
+                if member.memberships.size > 1
+                  message += "\nDu er medlem i følgende teams: #{member.memberships.map(&:team.name)}"
+                end
+                client.chat_postMessage(text: message, channel: im_channel_id)
                 notified.append(member.full_name)
               rescue Slack::Web::Api::Errors::SlackError => e
                 puts e
