@@ -23,7 +23,7 @@
     %h4 Medlemmer
 
     .pure-g
-      .pure-u-1-3
+      .pure-u-1.pure-u-md-1-3
         %ul#membersList
           - if team.members.empty?
             %li Ingen medlemer
@@ -36,7 +36,7 @@
                 %button.pure-button.pull-right{onClick: "remove_member('#{member.id}');"}
                   Slett
 
-    .pure-u
+    .pure-u-1.pure-u-md-1-3
       %a{href: "/members/#{team.name}/add"}
         Legg til medlem
 

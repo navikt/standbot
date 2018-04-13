@@ -10,7 +10,7 @@
     .content
       .pure-g
         - Team.active.each do |team|
-          .pure-u-1-6#teamInfo
+          .pure-u-1-3.pure-u-md-1-6#teamInfo
             %a{href: "/team/#{team.name}"}
               - avatar_url = "/images/dummy-profile-pic.png"
               %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: avatar_url}
@@ -19,7 +19,7 @@
             %p#teamDesc
               Lorem ipsum
 
-        .pure-u-1-6#teamInfo
+        .pure-u-1-3.pure-u-md-1-6#teamInfo
           %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
           %h4#teamTitle
             %a{href: "/team/new"} Add team

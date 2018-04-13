@@ -15,10 +15,10 @@
       %h3 Legg til medlem
 
     .pure-g
-      .pure-u-1-6
+      .pure-u-1.pure-u-md-1-6
         %input#searchMembers{:onkeyup => "searchInMembers()", :placeholder => "Search for names..", :type => "text"}/
     .pure-g
-      .pure-u-1-3
+      .pure-u-1.pure-u-md-1-3
         %ul#membersList
           - locals['members'].each do |member|
             %li{id: member.id, class: "memberRow"}
