@@ -62,8 +62,8 @@ module Standbot
         else
           logger.info("#{member.full_name} sent a message missing team name: #{message}")
           client.say(text: 'Du mangler teamnavn i meldingen din, start '\
-                           'meldingen med `#team_name`.\nDu er medlem av '\
-                           "følgende team: #{memberships.map(&:team.name)}",
+                           "meldingen med `#team_name`.\nDu er medlem av "\
+                           "følgende team: #{memberships.map { |m| m.team.name }}",
                      channel: data.channel)
           return
         end

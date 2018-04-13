@@ -40,7 +40,7 @@ module Standweb
                 message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
                           "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
                 if member.memberships.size > 1
-                  message += "\nDu er medlem i følgende teams: #{member.memberships.map(&:team.name)}"
+                  message += "\nDu er medlem i følgende teams: #{member.memberships.map { |m| m.team.name }}"
                 end
                 client.chat_postMessage(text: message, channel: im_channel_id)
                 notified.append(member.full_name)
