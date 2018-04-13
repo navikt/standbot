@@ -15,4 +15,16 @@ class Team < Sequel::Model
   def standups
     Standup.where(team_id: id).order(Sequel.desc(:created_at))
   end
+
+  def valid_team_name
+    return name =~ /\A[[:word:]\-_]+\z/i
+  end
+
+  def validate
+    super
+    errors.add(:name, 'kan ikke være tom') if !name || name.empty?
+    unless valid_team_name
+      errors.add(name, 'er ikke et godkjent team navn (regex: /\A[[:word:]-_]+\z/i)')
+    end
+  end
 end
