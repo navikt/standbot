@@ -1,23 +1,21 @@
 !!! 5
 %html
   %head
-    = haml(:_header, :locals => {'title' => 'Stand-ups'})
+    = haml(:_header, locals: {'title' => 'Standbot'})
 
   %body
-    .header
-      %h1
-        %a{href: "/team/#{team_name}"}
-          = team_name
+    #layout
+      = haml(:'team/_menu', locals: { 'team' => team })
 
-    = haml(:'standup/_menu', :locals => locals)
+      #main
+        .header
+          %h1
+            = team.name
+          %h2
+            = standup_date
 
-    .content
-      .pure-g
-        - reports = locals['reports']
-        - if reports.nil? or reports.empty?
-          .pure-u.column
-            No reports for now
-        - else
-          - reports.each do |report|
-            - if report.updated_at
-              = haml(:'standup/_report', :locals => {'report' => report})
+        .content
+          = haml(:'standup/_nav', locals: { team: team, standup_date: standup_date })
+          = haml(:'standup/_standup', locals: { reports: reports })
+
+    %script{src: "/ui.js"}

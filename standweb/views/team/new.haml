@@ -1,35 +1,42 @@
 !!! 5
 %html
   %head
-    = haml(:_header, :locals => {'title' => 'New team'})
+    = haml(:_header, locals: {'title' => 'Standbot'})
 
   %body
-    .alert
-      = styled_flash
+    #layout
+      = haml(:_menu)
 
-    .header
-      %h1 Nytt team
+      #main
+        .alert
+          = styled_flash
 
-    .menu
-      %a{href: "/"}
-        Back
+        .header
+          %h1 Nytt team
+          %h2 Bli en del av stand-up regimet
 
-    .content
-      %form.pure-form.pure-form-aligned{"accept-charset" => "utf-8", :action => "/team/create", :role => "form", :method => "post"}
-        %fieldset
-          .pure-control-group
-            %label{for: "name"} Team navn
-            %input#name{name: "name", placeholder: "Team_Beam", type: "text"}/
-            %span.pure-form-message-inline This is a required field.
-          .pure-control-group
-            %label{for: "channel"} Team kanal
-            %input#channel{name: "channel", placeholder: "#teambeam", type: "text"}/
-          .pure-control-group
-            %label{for: "description"} Kort beskrivelse
-            %input#description{name: "description", placeholder: "", type: "text"}/
-          .pure-control-group
-            %label{for: "avatar_url"} URL til logo
-            %input#avatar_url{name: "avatar_url", placeholder: "", type: "text"}/
-          .pure-controls
-            %button.pure-button.pure-button-primary{type: "submit"} Legg til
+        .content
+          %h2.content-subhead Bli med
+          %p
+            Fyll ut skjemaet nedenfor, legg til medlemmer i neste skjermbildet, og ditt team vil få ha en digital stand-up
+            hver dag klokken 10.00. Ta kontakt med @kyrre.havik.eriksen på Slack hvis dere ønsker et annet tidspunkt.
 
+          %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
+            %fieldset
+              .pure-control-group
+                %label{for: 'name'} Team navn
+                %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text'}/
+                %span.pure-form-message-inline Påkrevd felt
+              .pure-control-group
+                %label{for: 'channel'} Team kanal
+                %input#channel{name: 'channel', placeholder: '#teambeam', type: 'text'}/
+              .pure-control-group
+                %label{for: 'description'} Kort beskrivelse
+                %input#description{name: 'description', placeholder: '', type: 'text'}/
+              .pure-control-group
+                %label{for: 'avatar_url'} URL til logo
+                %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text'}/
+              .pure-controls
+                %button.pure-button.pure-button-primary{type: 'submit'} Legg til
+
+    %script{src: "/ui.js"}

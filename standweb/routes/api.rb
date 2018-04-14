@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'date'
 require 'httparty'
 
@@ -19,34 +20,25 @@ module Standweb
           notified = []
           Team.active.each do |team|
             logger.info("Standup for #{team.name}")
-            standup = Standup.find(Sequel.function(:date, :created_at) => Date.today)
-            standup ||= Standup.new
-            team.add_standup(standup)
-            standup.save
 
             team.members.each do |member|
-              unless Report.find(:member_id => member.id,
-                                 :standup_id => standup.id,
-                                 Sequel.function(:date, :created_at) => Date.today)
-                Report.create(member_id: member.id, standup_id: standup.id)
+              im = client.im_open(user: member.slack_id)
+              im_channel_id = im && im['channel'] && im['channel']['id']
+              next unless im_channel_id
+              if notified.include?(member.full_name)
+                logger.info("#{member.full_name} already notified, skipping")
+                next
               end
-
-              begin
-                im = client.im_open(user: member.slack_id)
-                im_channel_id = im && im['channel'] && im['channel']['id']
-                next unless im_channel_id
-                next if notified.include?(member.full_name)
-                logger.info("Notifying #{member.full_name}")
-                message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
-                          "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
-                if member.memberships.size > 1
-                  message += "\nDu er medlem i følgende teams: #{member.memberships.map { |m| m.team.name }}"
-                end
-                client.chat_postMessage(text: message, channel: im_channel_id)
-                notified.append(member.full_name)
-              rescue Slack::Web::Api::Errors::SlackError => e
-                puts e
+              logger.info("Notifying #{member.full_name}")
+              message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
+                        "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
+              if member.memberships.size > 1
+                message += "\nDu er medlem i følgende teams: #{member.memberships.map { |m| m.team.name }}"
               end
+              client.chat_postMessage(text: message, channel: im_channel_id)
+              notified.append(member.full_name)
+            rescue Slack::Web::Api::Errors::SlackError => e
+              puts e
             end
           end
 

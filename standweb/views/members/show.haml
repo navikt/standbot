@@ -1,0 +1,56 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, locals: {'title' => 'Standbot'})
+
+  %body
+    #layout
+      = haml(:'team/_menu', locals: { 'team' => team })
+
+      #main
+        .alert#alert
+          = styled_flash
+
+        .header
+          %h1
+            = team.name
+          %h2 Medlemmer i teamet
+
+        .content
+          %p
+
+          .pure-g
+            .pure-u-1.pure-u-md
+              %ul#membersList
+                - if team.members.empty?
+                  %li Ingen medlemer
+                - else
+                  - team.members.each do |member|
+                    %li{id: member.id, class: "memberRow"}
+                      .pure-u
+                        %img.avatar{width: "64", height: "64", alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+                      .pure-u
+                        %h3
+                          = member.full_name
+                      %button.pure-button.pull-right{onClick: "remove_member('#{member.id}', '#{member.full_name}');"}
+                        Slett
+
+    %script{src: "/ui.js"}
+    :javascript
+      function remove_member(id, name) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.open("POST", "/members/#{team.name}/remove", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + id);
+          let row = document.getElementById(id);
+          row.parentElement.removeChild(row);
+          let alert = document.getElementById('alert');
+          while (alert.lastChild) {
+              alert.removeChild(alert.lastChild);
+          }
+          const element = document.createElement('div');
+          element.classList.add('flash');
+          element.classList.add('success');
+          element.innerText = 'Fjernet ' + name;
+          alert.appendChild(element);
+      }

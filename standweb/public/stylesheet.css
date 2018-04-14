@@ -1,20 +1,12 @@
-body {
-    padding: 1.5em;
-    background: #eee;
-}
-
-.header {
-}
-
 .pull-right {
     float: right;
 }
 
-.column {
-    padding: 1em;
-    width: 30em;
+#report {
+    margin-bottom: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
-
 .row {
     background: #fff;
     padding: 0.9em 1em;

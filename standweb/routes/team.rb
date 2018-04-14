@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Standweb
   class Web < Sinatra::Base
     namespace '/team/?' do
@@ -10,12 +11,12 @@ module Standweb
         name = params['name'].strip
         if Team.find(Sequel.ilike(:name, name))
           flash.next['error'] = 'Team navn eksisterer'
-          redirect("/team/new")
+          redirect('/team/new')
         end
 
         if name.empty?
           flash.next['error'] = 'Team navn kan ikke være blank'
-          redirect("/team/new")
+          redirect('/team/new')
         end
 
         channel_name = params['channel'].strip.tr('#', '')
@@ -33,18 +34,17 @@ module Standweb
 
         unless team.valid?
           flash.next['error'] = team.errors.full_messages.join('\n')
-          redirect("/team/new")
+          redirect('/team/new')
         end
         team.save
 
-        redirect("/team/#{team.name}")
+        redirect("/members/#{team.name}/add")
       end
 
       post '/:team_name/activate/?' do |team_name|
         team = Team.find(name: team_name)
         team.active = true
         team.save
-        flash.next['success'] = 'Team er reaktivert'
         redirect("/team/#{team.name}")
       end
 
@@ -52,13 +52,15 @@ module Standweb
         team = Team.find(name: team_name)
         team.active = false
         team.save
-        flash.next['success'] = 'Team er deaktivert'
         redirect("/team/#{team.name}")
       end
 
-      get '/:team_name/?' do
-        team_name = params['team_name']
-        haml(:'team/show', locals: { 'team_name' => team_name })
+      get '/:team_name/?' do |team_name|
+        team = Team.find(Sequel.ilike(:name, team_name))
+        redirect('/team/new') unless team
+        standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
+        reports = standup.nil? ? [] : standup.reports
+        haml(:'team/show', locals: { team: team, reports: reports })
       end
     end
   end

@@ -1,0 +1,9 @@
+- if reports.empty?
+  %p
+    Ingen stand-ups i dag
+- else
+  .pure-g
+    - reports.each do |report|
+      .pure-u-1.pure-u-md-1-3
+        #report
+          = haml(:'standup/_report', locals: { report: report })

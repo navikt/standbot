@@ -1,0 +1,23 @@
+- previous_standup = Standup.previous(team.name, standup_date)
+- next_standup = Standup.next(team.name, standup_date)
+- today = Date.today.to_s
+
+%p
+  %h4
+    - if previous_standup
+      %a{href: "/standups/#{team.name}/#{previous_standup.created_at.to_date}"}<
+        previous
+    - else
+      previous
+    |
+    - if next_standup
+      %a{href: "/standups/#{team.name}/#{next_standup.created_at.to_date}"}<
+        next
+    - else
+      next
+    |
+    - if standup_date != today
+      %a{href: "/standups/#{team.name}/#{today}"}<
+        today
+    - else
+      today

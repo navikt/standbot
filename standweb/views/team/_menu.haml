@@ -1,0 +1,15 @@
+%a#menuLink.menu-link{:href => "#menu"}
+  / Hamburger icon
+  %span
+#menu
+  .pure-menu
+    %a.pure-menu-heading{:href => "/"} Standbot
+    %ul.pure-menu-list
+      %li.pure-menu-item
+        %a.pure-menu-link{:href => "/team/#{team.name}"} Hjem
+      %li.pure-menu-item
+        %a.pure-menu-link{:href => "/members/#{team.name}/add"} Legg til medlem
+      %li.pure-menu-item
+        %a.pure-menu-link{:href => "/members/#{team.name}"} Medlemmer
+      %li.pure-menu-item
+        %a.pure-menu-link{:href => "/standups/#{team.name}"} Stand-ups

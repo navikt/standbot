@@ -1,12 +1,9 @@
 # frozen_string_literal: true
+
 class Standup < Sequel::Model
   many_to_one :team
   one_to_many :reports
   many_to_many :members, join_table: :reports
-
-  def to_date
-    created_at.to_date
-  end
 
   def self.todays_reports(team_name)
     team = Team.find(name: team_name)

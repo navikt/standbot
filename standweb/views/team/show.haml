@@ -1,68 +1,30 @@
 !!! 5
 %html
   %head
-    = haml(:_header, :locals => {'title' => 'Standbot'})
+    = haml(:_header, locals: {'title' => 'Standbot'})
 
   %body
-    - team = Team.find(:name => locals['team_name'])
-    .header
-      %h1
-        = team.name
-      %h3
-        Lorem Ipsum
+    #layout
+      = haml(:'team/_menu', locals: { 'team' => team })
 
-    %p.menu
-      %a{href: "/"}
-        Home
+      #main
+        .header
+          %h1
+            = team.name
+          %h2
+            = team.description || 'Lorem ipsum'
 
-    .pure-u
-      - if team.channel
-        %strong Channel:
-        = "##{team.channel.name}"
+        .content
+          %p
 
-    %h4 Medlemmer
+          = haml(:'standup/_nav', locals: { team: team, standup_date: Date.today })
+          = haml(:'standup/_standup', locals: { reports: reports })
 
-    .pure-g
-      .pure-u-1.pure-u-md-1-3
-        %ul#membersList
-          - if team.members.empty?
-            %li Ingen medlemer
-          - else
-            - team.members.each do |member|
-              %li{id: member.id, class: "memberRow"}
-                %img.avatar{width: "32", height: "32", alt: "#{member.full_name}'s avatar", src: member.avatar_url}
-                %span
-                  = member.full_name
-                %button.pure-button.pull-right{onClick: "remove_member('#{member.id}');"}
-                  Slett
-
-    .pure-u-1.pure-u-md-1-3
-      %a{href: "/members/#{team.name}/add"}
-        Legg til medlem
-
-    %h4 Stand-ups
-    %ul
-      - if team.standups.empty?
-        %li Ingen standups
-      - else
-        - team.standups.each do |standup|
-          %li
-            - date = standup.created_at.to_date
-            %a{href: "/standup/#{team.name}/#{date}"}
-              = date
-
-
-    - if team.active
-      %button.pure-button#teamStatus{onClick: "deactivate('#{team.name}')"}
-        Deaktiver
-    - else
-      %button.pure-button#teamStatus{onClick: "activate('#{team.name}')"}
-        Aktiver
-                
+    %script{src: "/ui.js"}
     :javascript
       function activate(team_name) {
           let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/team/#{team_name}/activate", true);
+          xhttp.open("POST", "/team/#{team.name}/activate", true);
           xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           xhttp.send();
           let button = document.getElementById('teamStatus');
@@ -72,7 +34,7 @@
 
       function deactivate(team_name) {
           let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/team/#{team_name}/deactivate", true);
+          xhttp.open("POST", "/team/#{team.name}/deactivate", true);
           xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           xhttp.send();
           let button = document.getElementById('teamStatus');
@@ -80,11 +42,4 @@
           button.onClick = function(){ activate(team_name); };
       }
 
-      function remove_member(id) {
-          let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/members/#{team_name}/remove", true);
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send("id=" + id);
-          let row = document.getElementById(id);
-          row.parentElement.removeChild(row);
-      }
+    %script{src: "/ui.js"}
