@@ -55,7 +55,6 @@ Sequel.migration do
     create_table(:teams) do
       primary_key :id
       String :name, null: false
-      String :avatar_url
       Int :channel_id
       Bool :active, default: true
 
