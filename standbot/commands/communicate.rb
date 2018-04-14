@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'date'
+require 'rumoji'
 
 module Standbot
   module Commands
@@ -33,7 +34,7 @@ module Standbot
       def self.report_to_standup(client, data, match)
         team_name = match['team']
         report_type = command_to_sym(match['report'])
-        message = match['expression']
+        message = Rumoji.decode(match['expression'])
         slack_id = data.user
 
         member = Member.find(slack_id: slack_id)
