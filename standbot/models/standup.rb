@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Standup < Sequel::Model
   many_to_one :team
   one_to_many :reports
