@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'date'
 require 'rumoji'
 
@@ -22,10 +23,10 @@ module Standbot
         end
       end
 
-      @slack_team_regex = /\<\#\w+\|(?<team>[[:word:]-]+)\>/
-      @literal_team_regex = /\#(?<team>[[:word:]-]+)/
-      @report_type_regex = /(?<report>i\s?(går|dag)|problem|(yester|to)day)/
-      @command_regex = Regexp.new(%r{(#{@slack_team_regex}|#{@literal_team_regex})?\s*#{@report_type_regex}}i)
+      @slack_team_regex = '\<\#\w+\|(?<team>[[:word:]-]+)\>'
+      @literal_team_regex = '\#(?<team>[[:word:]-]+)'
+      @report_type_regex = '(?<report>i\s?(går|dag)|problem|(yester|to)day)'
+      @command_regex = Regexp.new("(#{@slack_team_regex}|#{@literal_team_regex})?\s*#{@report_type_regex}", Regexp::IGNORECASE)
 
       command(@command_regex) do |client, data, match|
         report_to_standup(client, data, match)
