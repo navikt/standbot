@@ -18,7 +18,7 @@ class Team < Sequel::Model
   end
 
   def avatar
-    avatar_url || '/images/dummy-profile-pic.png'
+    avatar_url.to_s.empty? ? '/images/dummy-profile-pic.png' : avatar_url
   end
 
   def valid_team_name
