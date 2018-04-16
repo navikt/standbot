@@ -32,8 +32,8 @@ module Standweb
               logger.info("Notifying #{member.full_name}")
               message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
                         "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
-              if member.memberships.size > 1
-                message += "\nDu er medlem i følgende teams: #{member.memberships.map { |m| m.team.name }}"
+              if member.teams.size > 1
+                message += "\nDu er medlem i følgende teams: #{member.teams.map { |team| team.name }}"
               end
               client.chat_postMessage(text: message, channel: im_channel_id)
               notified.append(member.full_name)
