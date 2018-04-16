@@ -12,7 +12,10 @@
           %h1
             = team.name
           %h2
-            = team.description || 'Lorem ipsum'
+            - if team.channel
+              = "##{team.channel.name.downcase}"
+            - else
+              = ' '
 
         .content
           %p

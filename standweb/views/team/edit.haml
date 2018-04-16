@@ -1,0 +1,42 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, locals: {'title' => 'Standbot'})
+
+  %body
+    #layout
+      = haml(:_menu)
+
+      #main
+        .alert
+          = styled_flash
+
+        .header
+          %h1
+            = team.name
+          %h2 Oppdater team informasjon
+
+        .content
+          %p
+
+          %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: "/team/#{team.name}/update", role: 'form', method: 'post'}
+            %fieldset
+              .pure-control-group
+                %label{for: 'name'} Team navn
+                %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text', required: '', value: team.name}/
+                %span.pure-form-message-inline Påkrevd felt
+              .pure-control-group
+                %label{for: 'channel'} Team kanal
+                - channel_name = team.channel ? team.channel.name : ''
+                %input#channel{name: 'channel', placeholder: '#teambeam', type: 'text', value: channel_name}/
+              .pure-control-group
+                %label{for: 'description'} Kort beskrivelse
+                %input#description{name: 'description', placeholder: '', type: 'text', value: team.description}/
+              .pure-control-group
+                %label{for: 'avatar_url'} URL til logo
+                %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text', value: team.avatar_url}/
+              .pure-controls
+                %button.pure-button.pure-button-primary{type: 'submit'} Oppdater
+
+    %script{src: "/ui.js"}
+
