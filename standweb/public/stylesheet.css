@@ -61,25 +61,22 @@
     background-color: #eee;
 }
 
-#teamInfo {
-    background-color: #ddd;
-    margin: 0.5em;
-    padding: 1em;
+#team-info {
+    margin: 0.5em 0.5em 0 0.5em;
+    background-color: #eee;
 }
 
-#teamInfo .avatar {
+#team-info .avatar {
+    padding-top: 0.5em;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-#teamTitle {
+#team-info h4{
+    padding-bottom: 0.5em;
     text-align: center;
     text-transform: uppercase;
-}
-
-#teamDesc {
-    text-align: center;
 }
 
 .flash {

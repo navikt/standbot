@@ -26,19 +26,17 @@
 
           .pure-g
             - Team.active.each do |team|
-              .pure-u-1-3.pure-u-md-1-6#teamInfo
-                %a{href: "/team/#{team.name}"}
-                  %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: team.avatar}
-                  %h4#teamTitle
-                    = team.name
-                %p#teamDesc
-                  = team.description
+              .pure-u-1-3.pure-u-md-1-6
+                #team-info
+                  %a{href: "/team/#{team.name}"}
+                    %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: team.avatar}
+                    %h4
+                      = team.name
 
-            .pure-u-1-3.pure-u-md-1-6#teamInfo
-              %a{href: "/team/new"}
-                %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
-                %h4#teamTitle Nytt team
-              %p#teamDesc
-                Legg til nytt team
+            .pure-u-1-3.pure-u-md-1-6
+              #team-info
+                %a{href: "/team/new"}
+                  %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
+                  %h4 Nytt team
 
     %script{src: "/ui.js"}

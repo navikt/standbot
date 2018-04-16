@@ -20,15 +20,7 @@ module Standweb
         end
 
         team = Team.new(name: name)
-        team.description = params['description'].strip
         team.avatar_url = params['avatar_url'].strip
-
-        channel_name = params['channel'].strip.tr('#', '')
-        unless channel_name.empty?
-          channel = Channel.find(name: channel_name)
-          channel ||= Channel.create(name: channel_name)
-          channel.add_team(team)
-        end
 
         unless team.valid?
           flash.next['error'] = team.errors.full_messages.join('\n')
@@ -86,16 +78,7 @@ module Standweb
           redirect("/team/#{team_name}/edit")
         end
 
-        team.description = params['description'].strip
         team.avatar_url = params['avatar_url'].strip
-
-        channel_name = params['channel'].strip.tr('#', '')
-        if channel_name.empty?
-          team.channel = nil
-        else
-          channel = Channel.find(name: channel_name) || Channel.create(name: channel_name)
-          channel.add_team(team)
-        end
 
         unless team.valid?
           flash.next['error'] = team.errors.full_messages.join('\n')
