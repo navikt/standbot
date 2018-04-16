@@ -1,74 +1,60 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+.header
+  %h1
+    = team.name
+  %h2
+    Søk etter medlemmer og legg de til
 
-  %body
-    #layout
-      = haml(:'team/_menu', locals: { team: team })
+.content
+  %p
 
-      #main
-        .alert#alert
-          = styled_flash
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      %input#searchMembers{:onkeyup => "searchInMembers()", :placeholder => "Søk med navn", :type => "text"}/
+  .pure-g
+    .pure-u-1.pure-u-md-1
+      %ul#membersList
+        - members.each do |member|
+          %li{id: member.id, class: "memberRow"}
+            .pure-u
+              %img.avatar{width: "64", height: "64", alt: "#{member.profile.real_name}'s avatar", src: member.profile.image_72}
+            .pure-u
+              %h3
+                = member.profile.real_name
+            %button.pure-button.pull-right{onClick: "add_member('#{member.id}', '#{member.profile.real_name}');"}
+              Legg til
 
-        .header
-          %h1
-            = team.name
-          %h2
-            Søk etter medlemmer og legg de til
-
-        .content
-          %p
-
-          .pure-g
-            .pure-u-1.pure-u-md-1-2
-              %input#searchMembers{:onkeyup => "searchInMembers()", :placeholder => "Søk med navn", :type => "text"}/
-          .pure-g
-            .pure-u-1.pure-u-md-1
-              %ul#membersList
-                - members.each do |member|
-                  %li{id: member.id, class: "memberRow"}
-                    .pure-u
-                      %img.avatar{width: "64", height: "64", alt: "#{member.profile.real_name}'s avatar", src: member.profile.image_72}
-                    .pure-u
-                      %h3
-                        = member.profile.real_name
-                    %button.pure-button.pull-right{onClick: "add_member('#{member.id}', '#{member.profile.real_name}');"}
-                      Legg til
-
-    %script{src: "/ui.js"}
-    :javascript
-      function add_member(slack_id, name) {
-          let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/members/#{team.name}/add", true);
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send("id=" + slack_id);
-          let row = document.getElementById(slack_id);
-          row.parentElement.removeChild(row);
-          let alert = document.getElementById('alert');
-          while (alert.lastChild) {
-              alert.removeChild(alert.lastChild);
-          }
-          const element = document.createElement('div');
-          element.classList.add('flash');
-          element.classList.add('success');
-          element.innerText = 'Lagt til ' + name;
-          alert.appendChild(element);
+:javascript
+  function add_member(slack_id, name) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "/members/#{team.name}/add", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send("id=" + slack_id);
+      let row = document.getElementById(slack_id);
+      row.parentElement.removeChild(row);
+      let alert = document.getElementById('alert');
+      while (alert.lastChild) {
+          alert.removeChild(alert.lastChild);
       }
+      const element = document.createElement('div');
+      element.classList.add('flash');
+      element.classList.add('success');
+      element.innerText = 'Lagt til ' + name;
+      alert.appendChild(element);
+  }
 
-      function searchInMembers() {
-          let input = document.getElementById('searchMembers');
-          let filter = input.value.toUpperCase();
-          let ul = document.getElementById("membersList");
-          let li = ul.getElementsByTagName('li');
-      
-          // Loop through all list items, and hide those who don't match the search query
-          for (let i = 0; i < li.length; i++) {
-              let a = li[i].getElementsByTagName("h3")[0];
-              if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                  li[i].style.display = "";
-              } else {
-                  li[i].style.display = "none";
-              }
+  function searchInMembers() {
+      let input = document.getElementById('searchMembers');
+      let filter = input.value.toUpperCase();
+      let ul = document.getElementById("membersList");
+      let li = ul.getElementsByTagName('li');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (let i = 0; i < li.length; i++) {
+          let a = li[i].getElementsByTagName("h3")[0];
+          if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
           }
       }
+  }

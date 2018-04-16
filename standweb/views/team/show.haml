@@ -1,45 +1,33 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+#main
+  .header
+    %h1
+      = team.name
+    %h2
+      = ' '
 
-  %body
-    #layout
-      = haml(:'team/_menu', locals: { 'team' => team })
+  .content
+    %p
 
-      #main
-        .header
-          %h1
-            = team.name
-          %h2
-            = ' '
+    = haml(:'standup/_nav', locals: { team: team, standup_date: Date.today })
+    = haml(:'standup/_standup', locals: { reports: reports })
 
-        .content
-          %p
+:javascript
+  function activate(team_name) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "/team/#{team.name}/activate", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
+      let button = document.getElementById('teamStatus');
+      button.innerText = "Deactivate"
+      button.onClick = function(){ deactivate(team_name); };
+  }
 
-          = haml(:'standup/_nav', locals: { team: team, standup_date: Date.today })
-          = haml(:'standup/_standup', locals: { reports: reports })
-
-    %script{src: "/ui.js"}
-    :javascript
-      function activate(team_name) {
-          let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/team/#{team.name}/activate", true);
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send();
-          let button = document.getElementById('teamStatus');
-          button.innerText = "Deactivate"
-          button.onClick = function(){ deactivate(team_name); };
-      }
-
-      function deactivate(team_name) {
-          let xhttp = new XMLHttpRequest();
-          xhttp.open("POST", "/team/#{team.name}/deactivate", true);
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send();
-          let button = document.getElementById('teamStatus');
-          button.innerText = "Activate"
-          button.onClick = function(){ activate(team_name); };
-      }
-
-    %script{src: "/ui.js"}
+  function deactivate(team_name) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "/team/#{team.name}/deactivate", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
+      let button = document.getElementById('teamStatus');
+      button.innerText = "Activate"
+      button.onClick = function(){ activate(team_name); };
+  }

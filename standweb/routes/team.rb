@@ -4,7 +4,7 @@ module Standweb
   class Web < Sinatra::Base
     namespace '/team/?' do
       get '/new/?' do
-        haml(:'team/new')
+        haml(:'team/new', layout: true)
       end
 
       post '/create/?' do
@@ -62,7 +62,7 @@ module Standweb
           redirect('/team/new')
         end
 
-        haml(:'team/edit', locals: { team: team })
+        haml(:'team/edit', locals: { team: team }, layout: :'team/layout')
       end
 
       post '/:team_name/update' do |team_name|
@@ -98,7 +98,7 @@ module Standweb
 
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
         reports = standup.nil? ? [] : standup.reports
-        haml(:'team/show', locals: { team: team, reports: reports })
+        haml(:'team/show', locals: { team: team, reports: reports }, layout: :'team/layout')
       end
     end
   end

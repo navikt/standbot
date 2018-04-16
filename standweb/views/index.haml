@@ -1,42 +1,31 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+#main
+  .header
+    %h1
+      Standbot
+    %h2
+      NAV sin stand-up bot
 
-  %body
-    #layout
-      = haml(:_menu)
+  .content
+    %h2.content-subhead Velkommen
+    %p
+      Dette er NAV sin stand-up bot. Som hjelper teams med å ha en daglig stand-up uten å måtte være tilstede på kontoret.
+      Hver arbeidsdag klokken 10.00 sender bot'en en melding til alle medlemmer per team, hvor den ber hver person
+      rapportere inn tre ting, hva man gjorde i går, hva man gjør i dag, og hva slags problemer man har.
 
-      #main
-        .header
-          %h1
-            Standbot
-          %h2
-            NAV sin stand-up bot
+    %p
+      Det er helt frivillig å svare, og man trenger heller ikke si noe for hvert punkt.
 
-        .content
-          %h2.content-subhead Velkommen
-          %p
-            Dette er NAV sin stand-up bot. Som hjelper teams med å ha en daglig stand-up uten å måtte være tilstede på kontoret.
-            Hver arbeidsdag klokken 10.00 sender bot'en en melding til alle medlemmer per team, hvor den ber hver person
-            rapportere inn tre ting, hva man gjorde i går, hva man gjør i dag, og hva slags problemer man har.
+    .pure-g
+      - Team.active.each do |team|
+        .pure-u-1-3.pure-u-md-1-6
+          #team-info
+            %a{href: "/team/#{team.name}"}
+              %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: team.avatar}
+              %h4
+                = team.name
 
-          %p
-            Det er helt frivillig å svare, og man trenger heller ikke si noe for hvert punkt.
-
-          .pure-g
-            - Team.active.each do |team|
-              .pure-u-1-3.pure-u-md-1-6
-                #team-info
-                  %a{href: "/team/#{team.name}"}
-                    %img.avatar{width: "64", height: "64", alt: "#{team.name}'s avatar", src: team.avatar}
-                    %h4
-                      = team.name
-
-            .pure-u-1-3.pure-u-md-1-6
-              #team-info
-                %a{href: "/team/new"}
-                  %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
-                  %h4 Nytt team
-
-    %script{src: "/ui.js"}
+      .pure-u-1-3.pure-u-md-1-6
+        #team-info
+          %a{href: "/team/new"}
+            %img.avatar{width: "64", height: "64", alt: "Add team", src: "/images/plus.png"}
+            %h4 Nytt team

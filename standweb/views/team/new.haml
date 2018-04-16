@@ -1,36 +1,21 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+.header
+  %h1 Nytt team
+  %h2 Bli en del av stand-up regimet
 
-  %body
-    #layout
-      = haml(:_menu)
+.content
+  %h2.content-subhead Bli med
+  %p
+    Fyll ut skjemaet nedenfor, legg til medlemmer i neste skjermbildet, og ditt team vil få ha en digital stand-up
+    hver dag klokken 10.00. Ta kontakt med @kyrre.havik.eriksen på Slack hvis dere ønsker et annet tidspunkt.
 
-      #main
-        .alert
-          = styled_flash
-
-        .header
-          %h1 Nytt team
-          %h2 Bli en del av stand-up regimet
-
-        .content
-          %h2.content-subhead Bli med
-          %p
-            Fyll ut skjemaet nedenfor, legg til medlemmer i neste skjermbildet, og ditt team vil få ha en digital stand-up
-            hver dag klokken 10.00. Ta kontakt med @kyrre.havik.eriksen på Slack hvis dere ønsker et annet tidspunkt.
-
-          %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
-            %fieldset
-              .pure-control-group
-                %label{for: 'name'} Team navn
-                %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text', required: ''}/
-                %span.pure-form-message-inline Påkrevd felt
-              .pure-control-group
-                %label{for: 'avatar_url'} URL til logo
-                %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text'}/
-              .pure-controls
-                %button.pure-button.pure-button-primary{type: 'submit'} Legg til
-
-    %script{src: "/ui.js"}
+  %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
+    %fieldset
+      .pure-control-group
+        %label{for: 'name'} Team navn
+        %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text', required: ''}/
+        %span.pure-form-message-inline Påkrevd felt
+      .pure-control-group
+        %label{for: 'avatar_url'} URL til logo
+        %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text'}/
+      .pure-controls
+        %button.pure-button.pure-button-primary{type: 'submit'} Legg til

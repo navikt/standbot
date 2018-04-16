@@ -1,0 +1,12 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, locals: {'title' => 'Standbot'})
+
+  %body
+    #layout
+      = haml(:_menu)
+
+      = yield
+
+    %script{src: "/ui.js"}

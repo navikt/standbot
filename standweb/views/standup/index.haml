@@ -1,36 +1,24 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+.header
+  %h1
+    = team.name
+  %h2 Liste over stand-ups
 
-  %body
-    #layout
-      = haml(:'team/_menu', locals: { 'team' => team })
+.content
+  %p
 
-      #main
-        .header
-          %h1
-            = team.name
-          %h2 Liste over stand-ups
-
-        .content
-          %p
-
-          .pure-g
-            .pure-u-1.pure-u-md
-              %ul#membersList
-                - if team.standups.empty?
-                  %li Ingen standups
-                - else
-                  - team.standups.each do |standup|
-                    - date = standup.created_at.to_date
-                    %li.memberRow
-                      .pure-g
-                        .pure-u
-                          %a{href: "/standups/#{team.name}/#{date}"}
-                            %h3
-                              = date
-                          - standup.members.each do |member|
-                            %img.avatar{width: '32', height: '32', alt: "#{member.full_name}'s avatar", src: member.avatar_url}
-
-    %script{src: "/ui.js"}
+  .pure-g
+    .pure-u-1.pure-u-md
+      %ul#membersList
+        - if team.standups.empty?
+          %li Ingen standups
+        - else
+          - team.standups.each do |standup|
+            - date = standup.created_at.to_date
+            %li.memberRow
+              .pure-g
+                .pure-u
+                  %a{href: "/standups/#{team.name}/#{date}"}
+                    %h3
+                      = date
+                  - standup.members.each do |member|
+                    %img.avatar{width: '32', height: '32', alt: "#{member.full_name}'s avatar", src: member.avatar_url}

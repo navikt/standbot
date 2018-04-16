@@ -1,21 +1,9 @@
-!!! 5
-%html
-  %head
-    = haml(:_header, locals: {'title' => 'Standbot'})
+.header
+  %h1
+    = team.name
+  %h2
+    = standup_date
 
-  %body
-    #layout
-      = haml(:'team/_menu', locals: { 'team' => team })
-
-      #main
-        .header
-          %h1
-            = team.name
-          %h2
-            = standup_date
-
-        .content
-          = haml(:'standup/_nav', locals: { team: team, standup_date: standup_date })
-          = haml(:'standup/_standup', locals: { reports: reports })
-
-    %script{src: "/ui.js"}
+.content
+  = haml(:'standup/_nav', locals: { team: team, standup_date: standup_date })
+  = haml(:'standup/_standup', locals: { reports: reports })

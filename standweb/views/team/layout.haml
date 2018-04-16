@@ -1,0 +1,16 @@
+!!! 5
+%html
+  %head
+    = haml(:_header, locals: {'title' => 'Standbot'})
+
+  %body
+    #layout
+      = haml(:'team/_menu', locals: { team: team })
+
+      #main
+        .alert
+          = styled_flash
+
+        = yield
+
+    %script{src: "/ui.js"}
