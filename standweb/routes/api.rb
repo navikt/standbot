@@ -18,7 +18,15 @@ module Standweb
 
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
           notified = []
-          Team.active.each do |team|
+
+          if params['team']
+            team_name = params['team']
+            teams = Team.where(Sequel.ilike(:name, team_name))
+          else
+            teams = Team.active
+          end
+
+          teams.each do |team|
             logger.info("Standup for #{team.name}")
 
             team.members.each do |member|
