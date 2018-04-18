@@ -79,7 +79,7 @@
     text-transform: uppercase;
 }
 
-.flash {
+#alert .flash {
     display: block;
     text-align: center;
     font-weight: normal;
@@ -88,17 +88,17 @@
     transition: opacity 300ms ease-out;
 }
 
-.alert .error {
+#alert .error {
     background-color: #f04124;
     color: #FFFFFF;
 }
 
-.alert .info {
+#alert .info {
     background-color: #a0d3e8;
     color: #4f4f4f;
 }
 
-.alert .success {
+#alert .success {
     background-color: #43AC6A;
     color: #FFFFFF;
 }
