@@ -86,6 +86,7 @@ module Standweb
         end
         team.save
 
+        flash.next['success'] = 'Oppdatert'
         redirect("/team/#{name}")
       end
 
