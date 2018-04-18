@@ -20,7 +20,7 @@ module Standweb
     end
 
     get '/' do
-      haml(:index, layout: true)
+      haml(:index)
     end
   end
 end

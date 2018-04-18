@@ -4,7 +4,7 @@ module Standweb
   class Web < Sinatra::Base
     namespace '/team/?' do
       get '/new/?' do
-        haml(:'team/new', layout: true)
+        haml(:'team/new')
       end
 
       post '/create/?' do
