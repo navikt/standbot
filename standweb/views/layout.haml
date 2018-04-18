@@ -7,6 +7,10 @@
     #layout
       = haml(:_menu)
 
-      = yield
+      #main
+        .alert
+          = styled_flash
+
+        = yield
 
     %script{src: "/ui.js"}
