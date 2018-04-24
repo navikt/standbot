@@ -64,8 +64,10 @@ module Standbot
         else
           logger.info("#{member.full_name} sent a message missing team name: #{message}")
           client.say(text: 'Du mangler teamnavn i meldingen din, start '\
-                           "meldingen med `#team_name`.\nDu er medlem av "\
-                           "følgende team: #{memberships.map { |m| m.team.name }}",
+                           'meldingen med `#team_name`.\nFor eksempel: '\
+                           '`#aura i dag er jeg på kotlin workshop`\n'\
+                           'Du er medlem av følgende team: '\
+                           "#{memberships.map { |m| m.team.name }}",
                      channel: data.channel)
           return
         end
@@ -90,7 +92,7 @@ module Standbot
 
         report.update(report_type => message)
         report.save
-        client.say(text: "notert (for #{team.name})", channel: data.channel)
+        client.say(text: "notert (for https://standup.nais.io/team/#{team.name})", channel: data.channel)
       end
 
       def self.command_to_sym(cmd)

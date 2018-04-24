@@ -34,14 +34,21 @@ module Standweb
               im_channel_id = im && im['channel'] && im['channel']['id']
               next unless im_channel_id
               if notified.include?(member.full_name)
-                logger.info("#{member.full_name} already notified, skipping")
+                logger.info("#{member.full_name} is already notified, skipping this time")
                 next
               end
               logger.info("Notifying #{member.full_name}")
-              message = "Tid for standup!\nRapporter tilbake med 'i går', 'i dag', og" \
-                        "'problem'\nFor eksempel `i går satt jeg i møter hele dagen`"
+              message = 'Tid for stand-up!\nRapporter tilbake med `i går`, `i dag`, og'\
+                        '`problem`.\n'
               if member.teams.size > 1
-                message += "\nDu er medlem i følgende teams: #{member.teams.map { |team| team.name }}"
+                message += 'Du er med i flere team, og må da spesifisere team '\
+                           'for rapportere per team. Alt du trenger å gjøre er '\
+                           'å starte kommandoen din med  #teamnavn.\n'\
+                           'For eksempel: `#aura i dag er jeg på kotlin workshop`'\
+                           "\nDu er medlem i følgende teams: #{member.teams.map { |team| team.name }}"
+              else
+                message += '\nFor eksempel: `i går satt jeg i møter hele dagen`'\
+                           "Se team-rapporten på https://standup.nais.io/team/#{team.name}"
               end
               client.chat_postMessage(text: message, channel: im_channel_id)
               notified.append(member.full_name)
