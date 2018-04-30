@@ -6,7 +6,11 @@
   %h2.content-subhead Bli med
   %p
     Fyll ut skjemaet nedenfor, legg til medlemmer i neste skjermbildet, og ditt team vil få ha en digital stand-up
-    hver dag klokken 10.00. Ta kontakt med @kyrre.havik.eriksen på Slack hvis dere ønsker et annet tidspunkt.
+    hver dag klokken 09.00. Ta kontakt med @kyrre.havik.eriksen på Slack hvis dere ønsker et annet tidspunkt.
+
+  %p
+    Det er også mulig for hvert team å få en oppsummering av stand-upen rapportert til team-kanalen. Da må man fylle
+    ut "slack-kanal" og huke av for "Daglig oppsumering".
 
   %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
     %fieldset
@@ -23,7 +27,7 @@
       .pure-control-group
         %label{:for => "summary"}
           %input#summary{:type => "checkbox"}/
-          Daglig oppsumering (kl 11.00)
+          Daglig oppsumering (kl 10.00)
 
       .pure-controls
         %button.pure-button.pure-button-primary{type: 'submit'} Legg til
