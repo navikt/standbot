@@ -9,6 +9,9 @@ module Standweb
 
       post '/create/?' do
         name = params['name'].strip
+        channel_name = params['channel'].strip.delete_prefix('#')
+        summary = params['summary']
+
         if name.empty?
           flash.next['error'] = 'Team navn kan ikke være blank'
           redirect('/team/new')
@@ -26,7 +29,25 @@ module Standweb
           flash.next['error'] = team.errors.full_messages.join('\n')
           redirect('/team/new')
         end
+
+        unless summary.nil?
+          if channel_name.empty?
+            flash.next['error'] = 'Trenger slack-kanal for å få daglig oppdatering'
+            redirect('/team/new')
+          end
+
+          team.summary = true
+        else
+          team.summary = false
+        end
         team.save
+
+        unless channel_name.empty?
+          channel = Channel.find(Sequel.ilike(:name, channel_name))
+          channel = Channel.create(name: channel_name) unless channel
+          channel.add_team(team)
+          channel.save
+        end
 
         redirect("/members/#{team.name}/add")
       end
@@ -67,6 +88,9 @@ module Standweb
 
       post '/:team_name/update' do |team_name|
         name = params['name'].strip
+        channel_name = params['channel'].strip.delete_prefix('#')
+        summary = params['summary']
+
         if name.empty?
           flash.next['error'] = 'Team navn kan ikke være blank'
           redirect("/team/#{team_name}/edit")
@@ -84,7 +108,25 @@ module Standweb
           flash.next['error'] = team.errors.full_messages.join('\n')
           redirect("/team/#{team_name}/edit")
         end
+
+        unless summary.nil?
+          if channel_name.empty?
+            flash.next['error'] = 'Trenger slack-kanal for å få daglig oppdatering'
+            redirect("/team/#{team_name}/edit")
+          end
+
+          team.summary = true
+        else
+          team.summary = false
+        end
         team.save
+
+        unless channel_name.empty?
+          channel = Channel.find(Sequel.ilike(:name, channel_name))
+          channel = Channel.create(name: channel_name) unless channel
+          channel.add_team(team)
+          channel.save
+        end
 
         flash.next['success'] = 'Oppdatert'
         redirect("/team/#{name}")

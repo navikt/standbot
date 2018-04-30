@@ -15,5 +15,11 @@
       .pure-control-group
         %label{for: 'avatar_url'} URL til logo
         %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text', value: team.avatar_url}/
+      .pure-control-group
+        %label{for: 'channel'} Slack-kanal
+        %input#channel{name: 'channel', placeholder: '#aura', type: 'text', value: team.channel && team.channel.name}/
+      .pure-control-group
+        %label{for: 'summary'} Daglig oppsumering (kl 11.00)
+        %input#summary{name: 'summary', :type => "checkbox", checked: team.summary}/
       .pure-controls
         %button.pure-button.pure-button-primary{type: 'submit'} Oppdater
