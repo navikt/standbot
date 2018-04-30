@@ -12,7 +12,7 @@ module Standweb
         team = Team.find(name: team_name)
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => standup_date)
         reports = standup.nil? ? [] : standup.reports
-        haml(:'standup/show', locals: { team: team, standup_date: standup_date, reports: reports }, layout: :'team/layout')
+        haml(:'standup/show', locals: { team: team, standup_date: standup_date, reports: reports, standup: standup }, layout: :'team/layout')
       end
     end
   end

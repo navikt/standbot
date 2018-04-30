@@ -2,7 +2,7 @@
   .pure-u
     %img.avatar{width: "64", height: "64", alt: "#{report.member.full_name}'s avatar", src: report.member.avatar_url}
   .pure-u
-    %h4.name
+    %h4.name.report-header
       = report.member.full_name
 - if report.yesterday
   .row#yesterday
