@@ -14,11 +14,21 @@
         - else
           - team.standups.each do |standup|
             - date = standup.created_at.to_date
-            %li.memberRow
-              .pure-g
-                .pure-u
-                  %a{href: "/standups/#{team.name}/#{date}"}
-                    %h3
-                      = date
-                  - standup.members.each do |member|
-                    %img.avatar{width: '32', height: '32', alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+            %a{href: "/standups/#{team.name}/#{date}"}
+              %li.memberRow
+                .pure-g
+                  .pure-u
+                    %div
+                      %h3
+                        = date
+
+                    - standup.members.each do |member|
+                      .pure-u.relative
+                        %img.avatar{width: '64', height: '64', alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+
+                    - team.members.each do |member|
+                      - unless standup.members.include?(member)
+                        .pure-u.relative
+                          %img.avatar.desaturate{width: '64', height: '64', alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+                          .center.white
+                            ?
