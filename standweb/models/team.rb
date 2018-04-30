@@ -21,6 +21,11 @@ class Team < Sequel::Model
     avatar_url.to_s.empty? ? '/images/dummy-profile-pic.png' : avatar_url
   end
 
+  def todays_standup
+    date = Date.today
+    standup = Standup.where(team_id: id, Sequel.function(:date, :created_at) => date)
+  end
+
   def valid_team_name
     name =~ /\A[[:word:]\-_]+\z/i
   end

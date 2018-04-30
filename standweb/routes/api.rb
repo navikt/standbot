@@ -59,6 +59,46 @@ module Standweb
 
           return 'OK'
         end
+
+        get '/daily_summary/?' do
+          logger.info('Running summaries for team')
+          if red_day?
+            logger.info('No summaries on red days')
+            return 'RED_DAY'
+          end
+
+          if params['team']
+            team_name = params['team']
+            teams = Team.where(Sequel.ilike(:name, team_name))
+          else
+            teams = Team.active
+          end
+
+          client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+
+          teams.each do |team|
+            next unless team.channel && team.summary
+            slack_channel = client.channels_list.channels.find { |channel| channel.name == team.channel.name }
+            slack_channel = client.groups_list.groups.find { |channel| channel.name == team.channel.name } unless slack_channel
+
+            unless slack_channel
+              logger.error("The channel ##{team.channel.name} doesn't exist")
+              next
+            end
+
+            standup = team.todays_standup.first
+            message = standup.reports.each do |report|
+              text = "#{report.member.full_name} rapporterte:"
+              attachments = []
+              attachments << { color: '#add8e6', text: "I går: #{report.yesterday}" } if report.yesterday
+              attachments << { color: '#90ee8f', text: "I dag: #{report.today}" } if report.today
+              attachments << { color: '#f17f7f', text: "Problem: #{report.problem}" } if report.problem
+              client.chat_postMessage(text: text, attachments: attachments, channel: slack_channel.id)
+            end
+          end
+
+          return 'OK'
+        end
       end
     end
 
