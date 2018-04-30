@@ -14,6 +14,7 @@ else
   DB = Sequel.connect(url)
 end
 
+require_relative 'channel'
 require_relative 'member'
 require_relative 'membership'
 require_relative 'report'
