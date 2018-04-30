@@ -38,8 +38,8 @@ module Standweb
                 next
               end
               logger.info("Notifying #{member.full_name}")
-              message = 'Tid for stand-up!\nRapporter tilbake med `i går`, `i dag`, og'\
-                        '`problem`.\n'
+              message = "Tid for stand-up!\nRapporter tilbake med `i går`, `i dag`, og "\
+                        "`problem`.\n"
               if member.teams.size > 1
                 message += 'Du er med i flere team, og må da spesifisere team '\
                            'for rapportere per team. Alt du trenger å gjøre er '\
@@ -47,7 +47,7 @@ module Standweb
                            'For eksempel: `#aura i dag er jeg på kotlin workshop`'\
                            "\nDu er medlem i følgende teams: #{member.teams.map { |team| team.name }}"
               else
-                message += '\nFor eksempel: `i går satt jeg i møter hele dagen`'\
+                message += "For eksempel: `i går satt jeg i møter hele dagen`.\n"\
                            "Se team-rapporten på https://standup.nais.io/team/#{team.name}"
               end
               client.chat_postMessage(text: message, channel: im_channel_id)
