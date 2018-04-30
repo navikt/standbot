@@ -5,6 +5,6 @@ cron:
     schedule: every monday,tuesday,wednesday,thursday,friday 10:00
     timezone: Europe/Oslo
   - description: "daily summary for teams that have it turned on"
-    url: /api/v1/standup
+    url: /api/v1/daily_summary
     schedule: every monday,tuesday,wednesday,thursday,friday 11:00
     timezone: Europe/Oslo
