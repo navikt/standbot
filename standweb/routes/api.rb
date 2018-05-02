@@ -102,8 +102,8 @@ module Standweb
       end
     end
 
-    def red_day?(date = nil)
-      year = (date || Date.today).year
+    def red_day?(date = Date.today)
+      year = date.year
       api_url = "https://webapi.no/api/v1/holydays/#{year}"
       response = HTTParty.get(api_url)
       if response.success?
