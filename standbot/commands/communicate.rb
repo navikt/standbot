@@ -23,6 +23,26 @@ module Standbot
         end
       end
 
+      command('team') do |client, data, match|
+        slack_id = data.user
+        team_name = match['expression'].strip
+
+        member = Member.find(slack_id: slack_id)
+        return unless validate_member(client, member)
+        return unless validate_memberships(client, member)
+
+        team = member.teams.find { |t| t.name.casecmp(team_name).zero? }
+        unless team
+          logger.info("#{member.full_name} is not part of #{team_name}")
+          client.say(text: "Du ser ikke ut til å være en del av #{team_name}", channel: data.channel)
+          return
+        end
+
+        member.add_team(team)
+        member.save
+        client.say(text: "#{team.name} er nå ditt default team", channel: data.channel)
+      end
+
       @slack_team_regex = '\<\#\w+\|(?<team>[[:word:]-]+)\>'
       @literal_team_regex = '\#(?<team>[[:word:]-]+)'
       @report_type_regex = '(?<report>i\s?(går|dag)|problem|(yester|to)day)'
@@ -39,35 +59,16 @@ module Standbot
         slack_id = data.user
 
         member = Member.find(slack_id: slack_id)
-        unless member
-          logger.info("Can't find member with slack id #{slack_id}")
-          client.say(text: 'Du ser ikke ut til å være registrert i et team', channel: data.channel)
-          return
-        end
-
-        memberships = Membership.where(member_id: member.id).all
-        if memberships.empty?
-          logger.info("#{member.full_name} has no membership")
-          client.say(text: 'Du ser ikke ut til å være registrert i et team', channel: data.channel)
-          return
-        end
-
-        if team_name
-          membership = memberships.find { |m| m.team.name.casecmp(team_name).zero? }
-          unless membership
-            logger.info("#{member.full_name} is not part of #{team_name}")
-            client.say(text: "Du ser ikke ut til å være en del av #{team_name}", channel: data.channel)
-            return
-          end
-        elsif memberships.size == 1
-          membership = memberships.first
-        else
+        return unless validate_member(client, member)
+        return unless validate_memberships(client, member)
+        team = find_team(client, team_name, member)
+        if team.nil?
           logger.info("#{member.full_name} sent a message missing team name: #{message}")
           client.say(text: 'Du mangler teamnavn i meldingen din, start '\
                            'meldingen med `#team_name`.\nFor eksempel: '\
                            '`#aura i dag er jeg på kotlin workshop`\n'\
                            'Du er medlem av følgende team: '\
-                           "#{memberships.map { |m| m.team.name }}",
+                           "#{member.teams.map(&:name)}",
                      channel: data.channel)
           return
         end
@@ -107,6 +108,40 @@ module Standbot
           logger.info("Unknown command: #{cmd}")
           cmd.to_sym
         end
+      end
+
+      def self.validate_member(client, member)
+        return true if member
+        logger.info("Can't find member with slack id #{slack_id}")
+        client.say(text: 'Du ser ikke ut til å være registrert i et team', channel: data.channel)
+        false
+      end
+
+      def self.validate_memberships(client, member)
+        if member.teams.empty?
+          logger.info("#{member.full_name} has no membership")
+          client.say(text: 'Du ser ikke ut til å være registrert i et team', channel: data.channel)
+          return false
+        end
+        true
+      end
+
+      def self.find_team(client, team_name, member)
+        team = nil
+        if team_name
+          team = member.teams.find { |t| t.name.casecmp(team_name).zero? }
+          unless team
+            logger.info("#{member.full_name} is not part of #{team_name}")
+            client.say(text: "Du ser ikke ut til å være en del av #{team_name}", channel: data.channel)
+            return nil
+          end
+        elsif member.teams.size == 1
+          team = member.teams.first
+        elsif member.team
+          team = member.team
+        end
+
+        team
       end
     end
   end
