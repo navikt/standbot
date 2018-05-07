@@ -1,10 +1,10 @@
 ---
 cron:
-  - description: "checks if it's time for a standup"
+  - description: "Informerer om daglig stand-up"
     url: /api/v1/standup
     schedule: every monday,tuesday,wednesday,thursday,friday 09:00
     timezone: Europe/Oslo
-  - description: "daily summary for teams that have it turned on"
+  - description: "Oppsumering av dagens stand-up"
     url: /api/v1/daily_summary
     schedule: every monday,tuesday,wednesday,thursday,friday 10:00
     timezone: Europe/Oslo
