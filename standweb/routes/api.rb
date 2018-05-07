@@ -38,8 +38,12 @@ module Standweb
                 next
               end
               logger.info("Notifying #{member.full_name}")
-              message = "Tid for stand-up!\nRapporter tilbake med `i går`, `i dag`, og "\
-                        "`problem`.\n"
+              message = "Tid for stand-up!\nRapporter tilbake med "
+              unless Date.today.monday?
+                message += "`i går`, "
+              end
+              message += "`i dag`, og `problem`.\n"
+
               if member.teams.size > 1
                 message += 'Du er med i flere team, og må da spesifisere team '\
                            'for rapportere per team. Alt du trenger å gjøre er '\
