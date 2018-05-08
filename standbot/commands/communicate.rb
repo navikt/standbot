@@ -65,19 +65,21 @@ module Standbot
         member = Member.find(slack_id: slack_id)
         return unless validate_member(client, member)
         return unless validate_memberships(client, member)
+
         team = find_team(client, team_name, member)
         if team.nil?
           logger.info("#{member.full_name} sent a message missing team name: #{message}")
-          client.say(text: 'Du mangler teamnavn i meldingen din, start '\
-                           'meldingen med `#team_name`.\nFor eksempel: '\
-                           '`#aura i dag er jeg på kotlin workshop`\n'\
-                           'Du er medlem av følgende team: '\
-                           "#{member.teams.map(&:name)}",
-                     channel: data.channel)
+          message = 'Du mangler teamnavn i meldingen din, start '\
+                    "meldingen med `#team_name`.\nFor eksempel: "\
+                    "`#aura i dag er jeg på kotlin workshop`\n"\
+                    'Du er medlem av følgende team: '\
+                    "#{member.teams.map(&:name).join(', ')}"\
+                    "Du kan også sette et default team med `team teamnavn`\n"\
+                    'Da trenger du kun å spesifisere `#teamnavn` på de teamene som ikke er default'
+          client.say(text: message, channel: data.channel)
           return
         end
 
-        team = membership.team
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
         if standup.nil?
           logger.info("No standup is created for #{team.name}, creating a new one now")
