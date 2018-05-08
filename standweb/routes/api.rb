@@ -102,7 +102,47 @@ module Standweb
             end
           end
 
-          return 'OK'
+          'OK'
+        end
+
+        get '/daily_reminder/?' do
+          logger.info('Daily reminder of stand-up')
+          if red_day?
+            logger.info('No stand-up on red days')
+            return 'RED_DAY'
+          end
+
+          client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+
+          if params['team']
+            team_name = params['team']
+            teams = Team.where(Sequel.ilike(:name, team_name))
+          else
+            teams = Team.active
+          end
+
+          reminders = {}
+          teams.each do |team|
+            standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
+            team.members.each do |member|
+              next if standup && standup.members.include?(member)
+              reminders[member.full_name] ||= {}
+              reminders[member.full_name]['teams'] ||= []
+              reminders[member.full_name]['teams'] << team.name
+              reminders[member.full_name]['slack_id'] = member.slack_id
+            end
+          end
+
+          reminders.each do |full_name, reminder|
+            im = client.im_open(user: reminder['slack_id'])
+            im_channel_id = im && im['channel'] && im['channel']['id']
+            next unless im_channel_id
+            logger.info("Reminding #{full_name}")
+            message = "En påminnelse om at du ikke har vært på stand-up i dag for #{reminder['teams'].join(', ')}"
+            client.chat_postMessage(text: message, channel: im_channel_id)
+          end
+
+          'OK'
         end
       end
     end

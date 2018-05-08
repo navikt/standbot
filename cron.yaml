@@ -4,6 +4,10 @@ cron:
     url: /api/v1/standup
     schedule: every monday,tuesday,wednesday,thursday,friday 09:00
     timezone: Europe/Oslo
+  - description: "Påminnelse om stand-up, for påloggede brukere"
+    url: /api/v1/daily_reminder
+    schedule: every monday,tuesday,wednesday,thursday,friday 09:30
+    timezone: Europe/Oslo
   - description: "Oppsumering av dagens stand-up"
     url: /api/v1/daily_summary
     schedule: every monday,tuesday,wednesday,thursday,friday 10:00
