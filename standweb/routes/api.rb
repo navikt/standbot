@@ -39,21 +39,20 @@ module Standweb
               end
               logger.info("Notifying #{member.full_name}")
               message = "Tid for stand-up!\nRapporter tilbake med "
-              unless Date.today.monday?
-                message += "`i går`, "
-              end
+              message += '`i går`, ' unless Date.today.monday?
               message += "`i dag`, og `problem`.\n"
 
-              if member.teams.size > 1
-                message += 'Du er med i flere team, og må da spesifisere team '\
+              message += if member.teams.size > 1
+                           'Du er med i flere team, og må da spesifisere team '\
                            'i rapporten din. Alt du trenger å gjøre er '\
                            "å starte kommandoen din med  #teamnavn.\n"\
                            'For eksempel: `#aura i dag er jeg på kotlin workshop`'\
                            "\nDu er medlem i følgende teams: #{member.teams.map(&:name).join(', ')}\n"
-              else
-                message += "For eksempel: `i går satt jeg i møter hele dagen`.\n"\
+                         else
+                           "For eksempel: `i går satt jeg i møter hele dagen`.\n"\
                            "Se team-rapporten på https://standup.nais.io/team/#{team.name}"
-              end
+                         end
+
               client.chat_postMessage(text: message, channel: im_channel_id)
               notified.append(member.full_name)
             rescue Slack::Web::Api::Errors::SlackError => e
@@ -83,7 +82,7 @@ module Standweb
           teams.each do |team|
             next unless team.channel && team.summary
             slack_channel = client.channels_list.channels.find { |channel| channel.name == team.channel.name }
-            slack_channel = client.groups_list.groups.find { |channel| channel.name == team.channel.name } unless slack_channel
+            slack_channel ||= client.groups_list.groups.find { |channel| channel.name == team.channel.name }
 
             unless slack_channel
               logger.error("The channel ##{team.channel.name} doesn't exist")
@@ -92,7 +91,7 @@ module Standweb
 
             standup = team.todays_standup
             next if standup.nil?
-            message = standup.reports.each do |report|
+            standup.reports.each do |report|
               text = "#{report.member.full_name} rapporterte:"
               attachments = []
               attachments << { color: '#add8e6', text: "I går: #{report.yesterday}" } if report.yesterday
@@ -125,7 +124,7 @@ module Standweb
           teams.each do |team|
             standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
             team.members.each do |member|
-              next if standup && standup.members.include?(member)
+              next if standup&.members&.include?(member)
               reminders[member.full_name] ||= {}
               reminders[member.full_name]['teams'] ||= []
               reminders[member.full_name]['teams'] << team.name

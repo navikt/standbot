@@ -30,7 +30,7 @@ module Standweb
           redirect('/team/new')
         end
 
-        unless summary.nil?
+        if summary
           if channel_name.empty?
             flash.next['error'] = 'Trenger slack-kanal for å få daglig oppdatering'
             redirect('/team/new')
@@ -44,7 +44,7 @@ module Standweb
 
         unless channel_name.empty?
           channel = Channel.find(Sequel.ilike(:name, channel_name))
-          channel = Channel.create(name: channel_name) unless channel
+          channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
         end
@@ -109,7 +109,7 @@ module Standweb
           redirect("/team/#{team_name}/edit")
         end
 
-        unless summary.nil?
+        if summary
           if channel_name.empty?
             flash.next['error'] = 'Trenger slack-kanal for å få daglig oppdatering'
             redirect("/team/#{team_name}/edit")
@@ -123,7 +123,7 @@ module Standweb
 
         unless channel_name.empty?
           channel = Channel.find(Sequel.ilike(:name, channel_name))
-          channel = Channel.create(name: channel_name) unless channel
+          channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
         end
