@@ -10,9 +10,9 @@ module Standweb
     namespace '/api/?' do
       namespace '/v1/?' do
         get '/standup/?' do
-          logger.info('Time for standup')
+          logger.info('Time for stand-up')
           if red_day?
-            logger.info('No standup on red days')
+            logger.info('No stand-up on red days')
             return 'RED_DAY'
           end
 
@@ -46,10 +46,10 @@ module Standweb
 
               if member.teams.size > 1
                 message += 'Du er med i flere team, og må da spesifisere team '\
-                           'for rapportere per team. Alt du trenger å gjøre er '\
-                           'å starte kommandoen din med  #teamnavn.\n'\
+                           'i rapporten din. Alt du trenger å gjøre er '\
+                           "å starte kommandoen din med  #teamnavn.\n"\
                            'For eksempel: `#aura i dag er jeg på kotlin workshop`'\
-                           "\nDu er medlem i følgende teams: #{member.teams.map { |team| team.name }}"
+                           "\nDu er medlem i følgende teams: #{member.teams.map(&:name).join(', ')}\n"
               else
                 message += "For eksempel: `i går satt jeg i møter hele dagen`.\n"\
                            "Se team-rapporten på https://standup.nais.io/team/#{team.name}"
@@ -61,11 +61,11 @@ module Standweb
             end
           end
 
-          return 'OK'
+          'OK'
         end
 
         get '/daily_summary/?' do
-          logger.info('Running summaries for team')
+          logger.info('Running summaries for teams')
           if red_day?
             logger.info('No summaries on red days')
             return 'RED_DAY'
@@ -90,7 +90,8 @@ module Standweb
               next
             end
 
-            standup = team.todays_standup.first
+            standup = team.todays_standup
+            next if standup.nil?
             message = standup.reports.each do |report|
               text = "#{report.member.full_name} rapporterte:"
               attachments = []
