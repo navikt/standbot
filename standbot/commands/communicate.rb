@@ -24,6 +24,10 @@ module Standbot
       end
 
       command('team') do |client, data, match|
+        set_default_team(client, data, match)
+      end
+
+      def self.set_default_team(client, data, match)
         slack_id = data.user
         team_name = match['expression'].strip
 
@@ -38,7 +42,7 @@ module Standbot
           return
         end
 
-        member.add_team(team)
+        member.team_id = team.id
         member.save
         client.say(text: "#{team.name} er nå ditt default team", channel: data.channel)
       end
