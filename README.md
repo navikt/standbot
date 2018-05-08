@@ -7,7 +7,8 @@ Standbot
 ## Egenskaper
 
 * Lag team og legg til medlemmer
-* Sender en melding til alle teams meldemmer klokken 09.00 hver dag, og ber om en rapport
+* Sender en melding til alle teams medlemmer klokken 09.00 hver dag, og ber om en rapport
+* Gir en liten påminnelse til de som ikke har sendt inn rapport klokken 09.30
 * Følger opp med en oppsummering av stand-upen klokken 10.00 hver dag
 * Viser alle rapportene under hver team sin profil
 
