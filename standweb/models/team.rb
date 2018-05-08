@@ -22,8 +22,7 @@ class Team < Sequel::Model
   end
 
   def todays_standup
-    date = Date.today
-    standup = Standup.where(team_id: id, Sequel.function(:date, :created_at) => date)
+    Standup.where(team_id: id, Sequel.function(:date, :created_at) => Date.today).first
   end
 
   def valid_team_name
