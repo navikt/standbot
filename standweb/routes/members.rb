@@ -2,13 +2,13 @@
 
 module Standweb
   class Web < Sinatra::Base
-    namespace '/members/?' do
-      get '/:team_name/?' do |team_name|
+    namespace '/team/:team_name/members/?' do
+      get '/?' do |team_name|
         team = Team.find(name: team_name)
         haml(:'members/show', locals: { team: team }, layout: :'team/layout')
       end
 
-      get '/:team_name/add/?' do |team_name|
+      get '/add/?' do |team_name|
         team = Team.find(name: team_name)
         client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
         members = client.users_list.members.reject(&:deleted)
@@ -16,7 +16,7 @@ module Standweb
         haml(:'members/add', locals: { team: team, members: members }, layout: :'team/layout')
       end
 
-      post '/:team_name/add/?' do |team_name|
+      post '/add/?' do |team_name|
         team = Team.find(name: team_name)
         slack_id = params['id']
         member = Member.find(slack_id: slack_id)
@@ -32,7 +32,7 @@ module Standweb
         redirect("/team/#{team_name}")
       end
 
-      post '/:team_name/remove/?' do |team_name|
+      post '/remove/?' do |team_name|
         member_id = params['id']
         team = Team.find(name: team_name)
         team.remove_member(member_id)

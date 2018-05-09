@@ -5,19 +5,19 @@
 %p
   %h4
     - if previous_standup
-      %a{href: "/standups/#{team.name}/#{previous_standup.created_at.to_date}"}<
+      %a{href: "/team/#{team.name}/standups/#{previous_standup.created_at.to_date}"}<
         previous
     - else
       previous
     |
     - if next_standup
-      %a{href: "/standups/#{team.name}/#{next_standup.created_at.to_date}"}<
+      %a{href: "/team/#{team.name}/standups/#{next_standup.created_at.to_date}"}<
         next
     - else
       next
     |
     - if standup_date != today
-      %a{href: "/standups/#{team.name}/#{today}"}<
+      %a{href: "/team/#{team.name}/standups/#{today}"}<
         today
     - else
       today

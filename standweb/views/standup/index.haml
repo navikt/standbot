@@ -14,7 +14,7 @@
         - else
           - team.standups.each do |standup|
             - date = standup.created_at.to_date
-            %a{href: "/standups/#{team.name}/#{date}"}
+            %a{href: "/team/#{team.name}/standups/#{date}"}
               %li.memberRow
                 .pure-g
                   .pure-u

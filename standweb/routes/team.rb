@@ -49,7 +49,7 @@ module Standweb
           channel.save
         end
 
-        redirect("/members/#{team.name}/add")
+        redirect("/team/#{team.name}/members/add")
       end
 
       post '/:team_name/activate/?' do |team_name|
@@ -141,7 +141,12 @@ module Standweb
 
         standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
         reports = standup.nil? ? [] : standup.reports
-        haml(:'team/show', locals: { team: team, reports: reports }, layout: :'team/layout')
+        haml(:'standup/show', locals: {
+               team: team,
+               standup_date: Date.today,
+               reports: reports,
+               standup: standup
+             }, layout: :'team/layout')
       end
     end
   end

@@ -25,7 +25,7 @@
 :javascript
   function remove_member(id, name) {
       let xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "/members/#{team.name}/remove", true);
+      xhttp.open("POST", "/team/#{team.name}/members/remove", true);
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send("id=" + id);
       let row = document.getElementById(id);
