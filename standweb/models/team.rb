@@ -6,7 +6,7 @@ class Team < Sequel::Model
   many_to_one :channel
 
   def self.active
-    Team.where(active: true).all
+    filter(active: true)
   end
 
   def members_name
