@@ -94,9 +94,9 @@ module Standweb
             attachments = []
             standup.reports.each do |report|
               text = ""
-              text += "I går: #{report.yesterday}" if report.yesterday
-              text += "I dag: #{report.today}" if report.today
-              text += "Problem: #{report.problem}" if report.problem
+              text += "*I går:* #{report.yesterday}" if report.yesterday
+              text += "*I dag:* #{report.today}" if report.today
+              text += "*Problem:* #{report.problem}" if report.problem
 
               attachments <<
               {
