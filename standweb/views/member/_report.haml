@@ -1,21 +1,20 @@
 .pure-g
-  - member = report.member
-  %a{href: "/member/#{member.id}"}
-    .pure-u
-      %img.avatar{width: "64", height: "64", alt: "#{member.full_name}'s avatar", src: member.avatar_url}
-    .pure-u
-      %h4.name.report-header
-        = member.full_name
+  .pure-u
+    %h4{style: "margin: 0;"}
+      = date
+
 - if report.yesterday
   .row#yesterday
     %strong I går:
     :escaped
       #{report.yesterday}
+
 - if report.today
   .row#today
     %strong I dag:
     :escaped
       #{report.today}
+
 - if report.problem
   .row#problem
     %strong Problem(er):

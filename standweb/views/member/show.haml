@@ -1,0 +1,30 @@
+.header
+  %h1
+    = member.full_name
+  %h2
+    - team_names = member.teams.map { |team| "<a href='/team/#{team.name}'>#{team.name}</a>" }
+    = "Medlem av #{team_names.join(', ')}"
+
+.content
+  %p
+    Her ser du en oversikt over dine egne stand-ups, og litt morsom statistikk
+
+  %p
+    %strong Første stand-up:
+    = member.reports.last || "Ikke deltat på stand-up enda"
+    %br
+    %strong Lengste stand-up streak:
+    = "Kommer"
+    %br
+    %strong Foreløpende stand-up streak:
+    = "Kommer"
+
+  - if member.reports.empty?
+    %p
+      Du har foreløpig ikke vært med på noen stand-ups
+  - else
+    .pure-g
+      - member.reports.each do |report|
+        .pure-u-1-3
+          #report
+            = haml(:'member/_report', locals: { report: report, date: report.created_at.to_date })
