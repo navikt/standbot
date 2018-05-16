@@ -91,14 +91,24 @@ module Standweb
 
             standup = team.todays_standup
             next if standup.nil?
+            attachments = []
             standup.reports.each do |report|
-              text = "#{report.member.full_name} rapporterte:"
-              attachments = []
-              attachments << { color: '#add8e6', text: "I går: #{report.yesterday}" } if report.yesterday
-              attachments << { color: '#90ee8f', text: "I dag: #{report.today}" } if report.today
-              attachments << { color: '#f17f7f', text: "Problem: #{report.problem}" } if report.problem
-              client.chat_postMessage(text: text, attachments: attachments, channel: slack_channel.id)
+              text = ""
+              text += "I går: #{report.yesterday}" if report.yesterday
+              text += "I dag: #{report.today}" if report.today
+              text += "Problem: #{report.problem}" if report.problem
+
+              attachments <<
+              {
+                fallback: "fallback",
+                author_name: report.member.full_name,
+                author_icon: report.member.avatar_url,
+                mrkdwn_in: [ "text" ],
+                text: text,
+                ts: report.created_at.to_i
+              }
             end
+            client.chat_postMessage(text: "Dagens rapport", attachments: attachments, channel: slack_channel.id)
           end
 
           'OK'
