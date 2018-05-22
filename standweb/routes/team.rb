@@ -88,7 +88,7 @@ module Standweb
 
       post '/:team_name/update' do |team_name|
         name = params['name'].strip
-        channel_name = params['channel'].strip.delete_prefix('#')
+        channel_name = params['channel'].strip.delete_prefix('#').downcase
         summary = params['summary']
 
         if name.empty?
@@ -122,7 +122,7 @@ module Standweb
         team.save
 
         unless channel_name.empty?
-          channel = Channel.find(Sequel.ilike(:name, channel_name))
+          channel = Channel.find(:name, channel_name)
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
