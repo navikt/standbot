@@ -6,7 +6,7 @@ class Team < Sequel::Model
   many_to_one :channel
 
   def self.active
-    filter(active: true)
+    filter(active: true).order(:name)
   end
 
   def members_name
