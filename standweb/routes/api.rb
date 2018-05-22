@@ -90,7 +90,11 @@ module Standweb
             end
 
             standup = team.todays_standup
-            next if standup.nil?
+            if standup.nil?
+              logger.info("No stand-up to summaries for #{team.name}")
+              next
+            end
+
             attachments = []
             standup.reports.each do |report|
               text = ""
@@ -108,6 +112,7 @@ module Standweb
                 ts: report.created_at.to_i
               }
             end
+            logger.info("Sending #{attachments.size} reports for #{team.name} with #{team.members.size} members")
             client.chat_postMessage(text: "Dagens rapport", attachments: attachments, channel: slack_channel.id)
           end
 
@@ -146,7 +151,7 @@ module Standweb
             im = client.im_open(user: reminder['slack_id'])
             im_channel_id = im && im['channel'] && im['channel']['id']
             next unless im_channel_id
-            logger.info("Reminding #{full_name}")
+            logger.info("Reminding #{full_name} of stand-up for #{reminder['teams'].join(', ')}")
             message = "En påminnelse om at du ikke har vært på stand-up i dag for #{reminder['teams'].join(', ')}"
             client.chat_postMessage(text: message, channel: im_channel_id)
           end
