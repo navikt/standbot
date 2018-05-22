@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Team < Sequel::Model
-  many_to_many :members, join_table: :memberships
+  many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups
   many_to_one :channel
 
