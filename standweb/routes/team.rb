@@ -52,30 +52,6 @@ module Standweb
         redirect("/team/#{team.name}/members/add")
       end
 
-      post '/:team_name/activate/?' do |team_name|
-        team = Team.find(name: team_name)
-        unless team
-          flash.next['error'] = 'Team finnes ikke'
-          redirect('/team/new')
-        end
-
-        team.active = true
-        team.save
-        redirect("/team/#{team.name}")
-      end
-
-      post '/:team_name/deactivate/?' do |team_name|
-        team = Team.find(name: team_name)
-        unless team
-          flash.next['error'] = 'Team finnes ikke'
-          redirect('/team/new')
-        end
-
-        team.active = false
-        team.save
-        redirect("/team/#{team.name}")
-      end
-
       get '/:team_name/edit/?' do |team_name|
         team = Team.find(Sequel.ilike(:name, team_name))
         unless team
