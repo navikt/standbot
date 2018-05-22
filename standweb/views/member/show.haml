@@ -11,7 +11,7 @@
 
   %p
     %strong Første stand-up:
-    = member.reports.last.created_at.to_date || "Ikke deltat på stand-up enda"
+    = member&.reports&.last&.created_at&.to_date || "Ikke deltat på stand-up enda"
     %br
     %strong Lengste stand-up streak:
     = "Kommer"
