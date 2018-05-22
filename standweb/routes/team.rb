@@ -143,7 +143,7 @@ module Standweb
         reports = standup.nil? ? [] : standup.reports
         haml(:'standup/show', locals: {
                team: team,
-               standup_date: Date.today,
+               standup_date: Date.today.to_s,
                reports: reports,
                standup: standup
              }, layout: :'team/layout')
