@@ -43,7 +43,7 @@ module Standweb
         team.save
 
         unless channel_name.empty?
-          channel = Channel.find(Sequel.ilike(:name, channel_name))
+          channel = Channel.find(name: channel_name)
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
@@ -98,7 +98,7 @@ module Standweb
         team.save
 
         unless channel_name.empty?
-          channel = Channel.find(:name, channel_name)
+          channel = Channel.find(name: channel_name)
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
