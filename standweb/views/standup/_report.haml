@@ -11,6 +11,12 @@
     %strong I går:
     :escaped
       #{report.yesterday}
+- elsif report.yesterday_report
+  .row#yesterday
+    %i
+      %strong I går:
+      :escaped
+        #{report.yesterday_report.today}
 - if report.today
   .row#today
     %strong I dag:

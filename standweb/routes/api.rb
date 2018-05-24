@@ -99,6 +99,7 @@ module Standweb
             standup.reports.each do |report|
               text = ""
               text += "*I går:* #{report.yesterday}\n" if report.yesterday
+              text += "_*I går:* #{report.yesterday_report.today}_\n" if report.yesterday_report && report.yesterday.nil?
               text += "*I dag:* #{report.today}\n" if report.today
               text += "*Problem:* #{report.problem}" if report.problem
 
