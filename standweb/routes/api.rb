@@ -159,6 +159,39 @@ module Standweb
 
           'OK'
         end
+
+        get '/notify/?' do
+          message = params['message']
+          return 'MISSING MESSAGE' unless message
+
+          if params['team']
+            team_name = params['team']
+            teams = Team.where(Sequel.ilike(:name, team_name))
+          else
+            teams = Team.active
+          end
+
+          client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+          logger.info("Sending message: #{message}")
+          teams.each do |team|
+            notified = []
+            logger.info("Sending message to #{team.name}")
+            team.members.each do |member|
+              if notified.include?(member.full_name)
+                logger.info("#{member.full_name} is already notified")
+                next
+              end
+              im = client.im_open(user: member.slack_id)
+              im_channel_id = im && im['channel'] && im['channel']['id']
+              next unless im_channel_id
+              logger.info("Sending message to #{member.full_name}")
+              client.chat_postMessage(text: message, channel: im_channel_id)
+              notified.append(member.full_name)
+            end
+          end
+
+          'OK'
+        end
       end
     end
 
