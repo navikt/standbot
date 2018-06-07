@@ -5,6 +5,6 @@ require_relative 'commands/communicate'
 
 module Standbot
   class Bot < SlackRubyBot::Bot
-    SlackRubyBot::Client.logger.level = Logger::WARN
+    SlackRubyBot::Client.logger.level = Logger::DEBUG
   end
 end
