@@ -62,7 +62,8 @@ module Standweb
         haml(:'team/edit', locals: { team: team }, layout: :'team/layout')
       end
 
-      post '/:team_name/update' do |team_name|
+      post '/:team_name/update' do
+        team_name = params['team_name'].force_encoding('utf-8')
         name = params['name'].strip
         channel_name = params['channel'].strip.delete_prefix('#').downcase
         summary = params['summary']
