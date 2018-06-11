@@ -173,8 +173,8 @@ module Standweb
 
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
           logger.info("Sending message: #{message}")
+          notified = []
           teams.each do |team|
-            notified = []
             logger.info("Sending message to team #{team.name}")
             team.members.each do |member|
               if notified.include?(member.full_name)
