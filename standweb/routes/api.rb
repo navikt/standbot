@@ -27,7 +27,7 @@ module Standweb
           end
 
           teams.each do |team|
-            logger.info("Standup for #{team.name}")
+            logger.info("Standup for team #{team.name}")
 
             team.members.each do |member|
               im = client.im_open(user: member.slack_id)
@@ -175,7 +175,7 @@ module Standweb
           logger.info("Sending message: #{message}")
           teams.each do |team|
             notified = []
-            logger.info("Sending message to #{team.name}")
+            logger.info("Sending message to team #{team.name}")
             team.members.each do |member|
               if notified.include?(member.full_name)
                 logger.info("#{member.full_name} is already notified")
