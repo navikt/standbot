@@ -25,13 +25,31 @@ class Team < Sequel::Model
     Standup.where(team_id: id, Sequel.function(:date, :created_at) => Date.today).first
   end
 
+  def time_for_standup?(time)
+    standup_time == time
+  end
+
+  def time_for_reminder?(time)
+    reminder && standup_time == (time.to_i - 30)
+  end
+
+  def time_for_summary?(time)
+    summary && channel && standup_time == (time.to_i - 100)
+  end
+
   def valid_team_name
     name =~ /\A[[:word:]\-_]+\z/i
   end
 
+  def valid_standup_time
+    ['0900', '0930', '1000'].include?(standup_time)
+  end
+
   def validate
     super
-    errors.add(:name, 'kan ikke være tom') if !name || name.empty?
-    errors.add(name, 'er ikke et godkjent team navn (regex: /\A[[:word:]-_]+\z/i)') unless valid_team_name
+    errors.add('Team navn', 'kan ikke være tom') if !name || name.empty?
+    errors.add('Team navn', 'er ikke et godkjent team navn (regex: /\A[[:word:]-_]+\z/i)') unless valid_team_name
+    errors.add('Standup-up klokkeslett', 'kan ikke være tom') if !standup_time || standup_time.empty?
+    errors.add('Standup-up klokkeslett', 'må være en av følgende tider: 0900, 0930, 1000') unless valid_standup_time
   end
 end
