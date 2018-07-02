@@ -3,16 +3,18 @@ def run_standup(client, teams)
   notified = []
 
   teams.each do |team|
-    logger.info("Standup for team #{team.name}")
+    logger.info("Stand-up for team #{team.name}")
 
     team.members.each do |member|
       im = client.im_open(user: member.slack_id)
       im_channel_id = im && im['channel'] && im['channel']['id']
       next unless im_channel_id
+
       if notified.include?(member.full_name)
         logger.info("#{member.full_name} is already notified, skipping this time")
         next
       end
+
       logger.info("Notifying #{member.full_name}")
       message = "Tid for stand-up!\nRapporter tilbake med "
       message += '`i går`, ' unless Date.today.monday?
@@ -32,7 +34,7 @@ def run_standup(client, teams)
       client.chat_postMessage(text: message, channel: im_channel_id, as_user: true)
       notified.append(member.full_name)
     rescue Slack::Web::Api::Errors::SlackError => e
-      logger.error("Problem running standup for #{member.full_name}: #{e}")
+      logger.error("Problem running stand-up for #{member.full_name}: #{e}")
     end
   end
 end
