@@ -4,7 +4,8 @@ module Standweb
   class Web < Sinatra::Base
     namespace '/team/?' do
       get '/new/?' do
-        haml(:'team/new')
+        team = Team.new
+        haml(:'team/new', locals: { team: team })
       end
 
       post '/create/?' do
@@ -24,6 +25,7 @@ module Standweb
 
         team = Team.new(name: name)
         team.avatar_url = params['avatar_url'].strip
+        team.standup_time = params['standup_time'].strip
 
         unless team.valid?
           flash.next['error'] = team.errors.full_messages.join('\n')
@@ -63,13 +65,14 @@ module Standweb
       end
 
       post '/:team_name/update' do
-        team_name = params['team_name'].force_encoding('utf-8')
+        team_name = params['team_name'].strip.force_encoding('utf-8')
         name = params['name'].strip
         channel_name = params['channel'].strip.delete_prefix('#').downcase
+        reminder = params['reminder']
         summary = params['summary']
 
         if name.empty?
-          flash.next['error'] = 'Team navn kan ikke være blank'
+          flash.next['error'] = 'Navn på team kan ikke være blankt'
           redirect("/team/#{team_name}/edit")
         end
 
@@ -80,9 +83,10 @@ module Standweb
         end
 
         team.avatar_url = params['avatar_url'].strip
+        team.standup_time = nil# params['standup_time'].strip
 
         unless team.valid?
-          flash.next['error'] = team.errors.full_messages.join('\n')
+          flash.next['error'] = team.errors.full_messages.join('<br />')
           redirect("/team/#{team_name}/edit")
         end
 
@@ -96,6 +100,8 @@ module Standweb
         else
           team.summary = false
         end
+
+        team.reminder = true ? reminder == 'true' : false
         team.save
 
         unless channel_name.empty?

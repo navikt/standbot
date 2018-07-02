@@ -11,23 +11,9 @@
   %p
     Det er også mulig for hvert team å få en oppsummering av stand-upen rapportert til team-kanalen. Da må man fylle
     ut "slack-kanal" og huke av for "Daglig oppsumering". Er kanalen privat, må dere invitere @The Daily Reporter
-    til kanalen, for at den skal kunne gi dere en oppsumering.
+    til kanalen, for at den skal kunne gi dere en oppsumering. Oppsummeringen vil alltid være en time etter selve stand-up'en.
 
-  %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
-    %fieldset
-      .pure-control-group
-        %label{for: 'name'} Team navn
-        %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text', required: ''}/
-        %span.pure-form-message-inline Påkrevd felt
-      .pure-control-group
-        %label{for: 'avatar_url'} URL til logo
-        %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text'}/
-      .pure-control-group
-        %label{for: 'channel'} Slack-kanal
-        %input#channel{name: 'channel', placeholder: '#aura', type: 'text'}/
-      .pure-control-group
-        %label{:for => "summary"} Daglig oppsumering (kl 10.00)
-        %input#summary{:type => "checkbox"}/
+  %p
+    Hvis ønskelig kan man også ha en daglig påminnelse om stand-up. Denne vil bli sendt ut 30 minutter etter stand-up til de medlemmene som fortsatt ikke har svart. Huk av for "Daglig påminnelse", hvis man ønsker dette.
 
-      .pure-controls
-        %button.pure-button.pure-button-primary{type: 'submit'} Legg til
+  = haml(:'team/_form', locals: { team: team, action: '/team/create'})
