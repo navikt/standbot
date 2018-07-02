@@ -83,7 +83,7 @@ module Standweb
         end
 
         team.avatar_url = params['avatar_url'].strip
-        team.standup_time = nil# params['standup_time'].strip
+        team.standup_time = params['standup_time'].strip
 
         unless team.valid?
           flash.next['error'] = team.errors.full_messages.join('<br />')
