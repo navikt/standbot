@@ -55,6 +55,7 @@ module Standweb
           if params['team']
             team_name = params['team']
             teams = Team.where(Sequel.ilike(:name, team_name))
+            return json(message: "Can't find a team named #{team_name}") if teams.empty?
           else
             teams = Team.active
           end
