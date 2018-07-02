@@ -13,9 +13,9 @@
     .pure-control-group
       %label#standup_time{for: 'standup_time'} Stand-up klokkeslett
       %select{name: 'standup_time'}
-        %option{value: "0900", selected: team.standup_time == '0900'} 09:00
-        %option{value: "0930", selected: team.standup_time == '0930'} 09:30
-        %option{value: "1000", selected: team.standup_time == '1000'} 10:00
+        %option{value: "09:00", selected: team.standup_time == '09:00'} 09:00
+        %option{value: "09:30", selected: team.standup_time == '09:30'} 09:30
+        %option{value: "10:00", selected: team.standup_time == '10:00'} 10:00
     .pure-control-group
       %label{for: 'reminder'} Daglig påminnelse
       %input#reminder{name: 'reminder', :type => "checkbox", checked: team.reminder}/

@@ -17,6 +17,7 @@ module Standweb
           end
           time = params['time']
           return json(message: "Query param 'time' is missing") unless time
+          time.insert(time.length - 2, ':') unless time.include?(':')
 
           logger.info("It's #{time}, time to do some work")
 
