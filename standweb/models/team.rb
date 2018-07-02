@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Team < Sequel::Model
+  TEAM_NAME_REGEX = Regexp.new("\\A[[:word:]\-]+\\z", Regexp::IGNORECASE)
+
   many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups
   many_to_one :channel
@@ -38,7 +40,7 @@ class Team < Sequel::Model
   end
 
   def valid_team_name?
-    name =~ /\A[[:word:]\-_]+\z/i
+    name =~ TEAM_NAME_REGEX
   end
 
   def valid_standup_time?
@@ -48,7 +50,7 @@ class Team < Sequel::Model
   def validate
     super
     errors.add('Team navn', 'kan ikke være tom') if !name || name.empty?
-    errors.add('Team navn', 'er ikke et godkjent team navn (regex: /\A[[:word:]-_]+\z/i)') unless valid_team_name?
+    errors.add('Team navn', "er ikke et godkjent team navn (regex: #{TEAM_NAME_REGEX}") unless valid_team_name?
     errors.add('Standup-up klokkeslett', 'kan ikke være tom') if !standup_time || standup_time.empty?
     errors.add('Standup-up klokkeslett', 'må være en av følgende tider: 0900, 0930, 1000') unless valid_standup_time?
   end
