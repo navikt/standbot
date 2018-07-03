@@ -30,6 +30,10 @@ module Standweb
             logger.info("Standup for team #{team.name}")
 
             team.members.each do |member|
+              if member.vacation?
+                logger.info("#{member.full_name} is on vacation")
+                next
+              end
               im = client.im_open(user: member.slack_id)
               im_channel_id = im && im['channel'] && im['channel']['id']
               next unless im_channel_id
@@ -140,6 +144,7 @@ module Standweb
           teams.each do |team|
             standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
             team.members.each do |member|
+              next if member.vacation?
               next if standup&.members&.include?(member)
               reminders[member.full_name] ||= {}
               reminders[member.full_name]['teams'] ||= []
