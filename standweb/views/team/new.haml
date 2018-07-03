@@ -13,7 +13,7 @@
     ut "slack-kanal" og huke av for "Daglig oppsumering". Er kanalen privat, må dere invitere @The Daily Reporter
     til kanalen, for at den skal kunne gi dere en oppsumering.
 
-  %form.pure-form.pure-form-aligned{'accept-charset' => 'utf-8', action: '/team/create', role: 'form', method: 'post'}
+  %form.pure-form.pure-form-aligned{'accept-charset': 'utf-8', action: '/team/create', role: 'form', method: 'post'}
     %fieldset
       .pure-control-group
         %label{for: 'name'} Team navn
@@ -26,8 +26,8 @@
         %label{for: 'channel'} Slack-kanal
         %input#channel{name: 'channel', placeholder: '#aura', type: 'text'}/
       .pure-control-group
-        %label{:for => "summary"} Daglig oppsumering (kl 10.00)
-        %input#summary{:type => "checkbox"}/
+        %label{for: "summary"} Daglig oppsumering (kl 10.00)
+        %input#summary{type: "checkbox"}/
 
       .pure-controls
         %button.pure-button.pure-button-primary{type: 'submit'} Legg til
