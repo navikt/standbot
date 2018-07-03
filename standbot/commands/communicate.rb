@@ -71,7 +71,7 @@ module Standbot
           return
         end
 
-        member.vacation_from = vacation_from if vacation_from
+        member.vacation_from = vacation_from || Date.today
         member.vacation_to = vacation_to
         member.save
 
@@ -219,10 +219,8 @@ module Standbot
       def self.inform_about_vacation(client, member, channel)
         if member.vacation_from.nil? && member.vacation_to.nil?
           client.say(text: "Det er ikke registrert ferie på deg", channel: channel)
-        elsif member.vacation_from
-          client.say(text: "Det er registrert at du har ferie fra #{member.vacation_from.to_s} til #{member.vacation_to.to_s}", channel: channel)
         else
-          client.say(text: "Det er registrert at du har ferie frem til #{member.vacation_to.to_s}", channel: channel)
+          client.say(text: "Det er registrert at du har ferie fra #{member.vacation_from.to_s} til #{member.vacation_to.to_s}", channel: channel)
         end
       end
     end
