@@ -6,7 +6,7 @@ class Member < Sequel::Model
   many_to_many :teams, join_table: :memberships
 
   def vacation?
-    return false if member.vacation_to.nil?
-    (member.vacation_from...(member.vacation_to + 1)).include?(Date.today)
+    return false if vacation_to.nil?
+    (vacation_from...(vacation_to + 1)).include?(Date.today)
   end
 end
