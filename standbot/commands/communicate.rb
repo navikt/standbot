@@ -10,6 +10,13 @@ module Standbot
         title 'Standbot'
         desc 'This bot inform you about standup, and notify the team'
 
+        command 'ferie' do
+          desc 'For å unngå å få stand-ip notifikasjoner når du er på ferie, kan du selv registrere når du har ferie\n'\
+               '`ferie <til-og-med-dato>` - registrere at du har ferie fra og med i dag, til og med en dato\n'\
+               '`ferie <fra-og-med-dato>-<til-og-med-dato>` - registrerer perioden du er på ferie\n'\
+               '`ferie ferdig` - hvis du er tilbake før den opprinnelige datoen'\
+        end
+
         command 'igår' do
           desc 'Report activity for each question'
         end
