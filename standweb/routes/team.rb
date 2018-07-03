@@ -101,7 +101,7 @@ module Standweb
           team.summary = false
         end
 
-        team.reminder = reminder == 'true'
+        team.reminder = reminder == 'on'
         team.save
 
         unless channel_name.empty?
