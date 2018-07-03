@@ -5,28 +5,30 @@ require 'rumoji'
 
 module Standbot
   module Commands
-    class Communicate < SlackRubyBot::Commands::Base
+    class Communicate < SlackRubyBot::Bot
       help do
         title 'Standbot'
         desc 'This bot inform you about standup, and notify the team'
+        long_desc 'hello world'
 
         command 'ferie' do
-          desc 'For å unngå å få stand-ip notifikasjoner når du er på ferie, kan du selv registrere når du har ferie\n'\
-               '`ferie <til-og-med-dato>` - registrere at du har ferie fra og med i dag, til og med en dato\n'\
-               '`ferie <fra-og-med-dato>-<til-og-med-dato>` - registrerer perioden du er på ferie\n'\
-               '`ferie ferdig` - hvis du er tilbake før den opprinnelige datoen'\
+          desc 'Slipp notifikasjoner i ferien'
+          long_desc "For å unngå å få stand-up notifikasjoner når du er på ferie, kan du selv registrere når du har ferie.\n"\
+                    "`ferie <til-og-med-dato>` - registrere at du har ferie fra og med i dag, til og med en dato\n"\
+                    "`ferie <fra-og-med-dato>-<til-og-med-dato>` - registrerer perioden du er på ferie\n"\
+                    "`ferie ferdig` - hvis du er tilbake før den opprinnelige datoen"\
         end
 
         command 'igår' do
-          desc 'Report activity for each question'
+          desc 'Rapporter om hva du gjorde i går'
         end
 
         command 'idag' do
-          desc 'Report activity for each question'
+          desc 'Rapporter om hva du skal gjøre i dag'
         end
 
         command 'problem' do
-          desc 'Report activity for each question'
+          desc 'Rapporter om potensielle problemer'
         end
       end
 
