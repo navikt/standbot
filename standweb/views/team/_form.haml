@@ -1,0 +1,27 @@
+%form.pure-form.pure-form-aligned{'accept-charset': 'utf-8', action: action, role: 'form', method: 'post'}
+  %fieldset
+    .pure-control-group
+      %label{for: 'name'} Team navn
+      %input#name{name: 'name', placeholder: 'Team_Beam', type: 'text', required: '', value: team.name}/
+      %span.pure-form-message-inline Påkrevd felt
+    .pure-control-group
+      %label{for: 'avatar_url'} URL til logo
+      %input#avatar_url{name: 'avatar_url', placeholder: '', type: 'text', value: team.avatar_url}/
+    .pure-control-group
+      %label{for: 'channel'} Slack-kanal
+      %input#channel{name: 'channel', placeholder: '#aura', type: 'text', value: team&.channel&.name}/
+    .pure-control-group
+      %label#standup_time{for: 'standup_time'} Stand-up klokkeslett
+      %select{name: 'standup_time'}
+        %option{value: "09:00", selected: team.standup_time == '09:00'} 09:00
+        %option{value: "09:30", selected: team.standup_time == '09:30'} 09:30
+        %option{value: "10:00", selected: team.standup_time == '10:00'} 10:00
+    .pure-control-group
+      %label{for: 'reminder'} Daglig påminnelse
+      %input#reminder{name: 'reminder', type: "checkbox", checked: team.reminder}/
+    .pure-control-group
+      %label{for: 'summary'} Daglig oppsumering
+      %input#summary{name: 'summary', type: "checkbox", checked: team.summary}/
+
+    .pure-controls
+      %button.pure-button.pure-button-primary{type: 'submit'} Legg til

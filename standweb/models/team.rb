@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Team < Sequel::Model
+  TEAM_NAME_REGEX = Regexp.new("\\A[[:word:]\-]+\\z", Regexp::IGNORECASE)
+  THIRTY_MINUTES = 30*60
+  ONE_HOUR = 1*60*60
+
   many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups
   many_to_one :channel
@@ -25,13 +29,31 @@ class Team < Sequel::Model
     Standup.where(team_id: id, Sequel.function(:date, :created_at) => Date.today).first
   end
 
-  def valid_team_name
-    name =~ /\A[[:word:]\-_]+\z/i
+  def time_for_standup?(time)
+    standup_time == time
+  end
+
+  def time_for_reminder?(time)
+    reminder && Time.parse(standup_time) == (Time.parse(time) - THIRTY_MINUTES)
+  end
+
+  def time_for_summary?(time)
+    summary && channel && Time.parse(standup_time) == (Time.parse(time) - ONE_HOUR)
+  end
+
+  def valid_team_name?
+    name =~ TEAM_NAME_REGEX
+  end
+
+  def valid_standup_time?
+    ['09:00', '09:30', '10:00'].include?(standup_time)
   end
 
   def validate
     super
-    errors.add(:name, 'kan ikke være tom') if !name || name.empty?
-    errors.add(name, 'er ikke et godkjent team navn (regex: /\A[[:word:]-_]+\z/i)') unless valid_team_name
+    errors.add('Team navn', 'kan ikke være tom') if !name || name.empty?
+    errors.add('Team navn', "er ikke et godkjent team navn (regex: #{TEAM_NAME_REGEX}") unless valid_team_name?
+    errors.add('Standup-up klokkeslett', 'kan ikke være tom') if !standup_time || standup_time.empty?
+    errors.add('Standup-up klokkeslett', 'må være en av følgende tider: 09:00, 09:30, 10:00') unless valid_standup_time?
   end
 end

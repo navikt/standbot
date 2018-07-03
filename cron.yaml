@@ -1,14 +1,22 @@
 ---
 cron:
-  - description: "Informerer om daglig stand-up"
-    url: /api/v1/standup
+  - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
+    url: /api/v2/jobs?time=0900
     schedule: every monday,tuesday,wednesday,thursday,friday 09:00
     timezone: Europe/Oslo
-  - description: "Påminnelse om stand-up, for påloggede brukere"
-    url: /api/v1/daily_reminder
+  - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
+    url: /api/v2/jobs?time=0930
     schedule: every monday,tuesday,wednesday,thursday,friday 09:30
     timezone: Europe/Oslo
-  - description: "Oppsumering av dagens stand-up"
-    url: /api/v1/daily_summary
+  - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
+    url: /api/v2/jobs?time=1000
     schedule: every monday,tuesday,wednesday,thursday,friday 10:00
+    timezone: Europe/Oslo
+  - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
+    url: /api/v2/jobs?time=1030
+    schedule: every monday,tuesday,wednesday,thursday,friday 10:30
+    timezone: Europe/Oslo
+  - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
+    url: /api/v2/jobs?time=1100
+    schedule: every monday,tuesday,wednesday,thursday,friday 10:30
     timezone: Europe/Oslo

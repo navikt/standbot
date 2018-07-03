@@ -2,6 +2,7 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
+require 'sinatra/json'
 require 'sinatra/namespace'
 
 module Standweb
@@ -26,4 +27,5 @@ module Standweb
 end
 
 require_relative 'models/init'
+require_relative 'services/init'
 require_relative 'routes/init'
