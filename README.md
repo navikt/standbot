@@ -8,6 +8,7 @@ Standbot
 
 * Lag team og legg til medlemmer
 * Sender en melding til alle teams medlemmer hver dag, og ber om en rapport
+* Flere forskjellige tidspunkt for stand-up
 * Gir en liten påminnelse til de som ikke har sendt inn rapport 30 minutter etter stand-up
 * Følger opp med en oppsummering av stand-upen en time senere
 * Viser alle rapportene under hver team sin profil
