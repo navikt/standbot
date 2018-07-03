@@ -1,0 +1,11 @@
+%br
+%h3
+  Er på ferie
+
+- team.members.each do |member|
+  - if member.vacation?
+    .pure-u.relative
+      %a{href: "/member/#{member.id}"}
+        %img.avatar.desaturate{width: '64', height: '64', alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+        .center.white
+          %i.material-icons.md-48 beach_access

@@ -1,8 +1,11 @@
 .pure-g
   - member = report.member
   %a{href: "/member/#{member.id}"}
-    .pure-u
+    .pure-u.relative
       %img.avatar{width: "64", height: "64", alt: "#{member.full_name}'s avatar", src: member.avatar_url}
+      - if member.vacation?
+        .center.white
+          %i.material-icons.md-48 beach_access
     .pure-u
       %h4.name.report-header
         = member.full_name

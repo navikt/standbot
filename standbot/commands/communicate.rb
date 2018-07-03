@@ -10,6 +10,13 @@ module Standbot
         title 'Standbot'
         desc 'This bot inform you about standup, and notify the team'
 
+        command 'ferie' do
+          desc 'For å unngå å få stand-ip notifikasjoner når du er på ferie, kan du selv registrere når du har ferie\n'\
+               '`ferie <til-og-med-dato>` - registrere at du har ferie fra og med i dag, til og med en dato\n'\
+               '`ferie <fra-og-med-dato>-<til-og-med-dato>` - registrerer perioden du er på ferie\n'\
+               '`ferie ferdig` - hvis du er tilbake før den opprinnelige datoen'\
+        end
+
         command 'igår' do
           desc 'Report activity for each question'
         end
@@ -21,6 +28,61 @@ module Standbot
         command 'problem' do
           desc 'Report activity for each question'
         end
+      end
+
+      command('ferie') do |client, data, match|
+        register_vacation_for_member(client, data, match)
+      end
+
+      def self.register_vacation_for_member(client, data, match)
+        slack_id = data.user
+
+        member = Member.find(slack_id: slack_id)
+        return unless validate_member(client, member)
+        return unless validate_memberships(client, member)
+
+        vacation_string = match['expression']
+        if vacation_string.nil?
+          inform_about_vacation(client, member, data.channel)
+          return
+        else
+          vacation_string = vacation_string.strip
+        end
+
+        if vacation_string == 'ferdig'
+          member.vacation_from = nil
+          member.vacation_to = nil
+          member.save
+          client.say(text: 'Velkommen tilbake! Håper du hadde en fin ferie', channel: data.channel)
+          return
+        end
+
+        vacation_from = nil
+        vacation_to = nil
+        if vacation_string.include?('-')
+          vacation_string = vacation_string.split('-')
+          vacation_from_string = vacation_string[0]
+          vacation_to_string = vacation_string[1]
+        else
+          vacation_to_string = vacation_string
+        end
+
+        vacation_from = parse_date(vacation_from_string) if vacation_from_string
+        if vacation_from.nil? and vacation_from_string
+          client.say(text: "Ukjent datoformat: #{vacation_from_string}", channel: data.channel)
+          return
+        end
+        vacation_to =  parse_date(vacation_to_string)
+        unless vacation_to
+          client.say(text: "Ukjent datoformat: #{vacation_to_string}", channel: data.channel)
+          return
+        end
+
+        member.vacation_from = vacation_from || Date.today
+        member.vacation_to = vacation_to
+        member.save
+
+        inform_about_vacation(client, member, data.channel)
       end
 
       command('team') do |client, data, match|
@@ -132,6 +194,17 @@ module Standbot
         true
       end
 
+      def self.parse_date(date)
+        begin
+          return Date.parse(date) if date =~ /\d{2}.\d{2}.\d{4}/
+          return Date.parse("#{date}.#{Date.today.year}") if date =~ /\d{2}.\d{2}/
+        rescue ArgumentError => e
+          logger.error("Ukjent dato #{date} skapte feilmelding: #{e}")
+        end
+
+        return nil
+      end
+
       def self.find_team(client, team_name, member)
         team = nil
         if team_name
@@ -148,6 +221,14 @@ module Standbot
         end
 
         team
+      end
+
+      def self.inform_about_vacation(client, member, channel)
+        if member.vacation_from.nil? && member.vacation_to.nil?
+          client.say(text: "Det er ikke registrert ferie på deg", channel: channel)
+        else
+          client.say(text: "Det er registrert at du har ferie fra #{member.vacation_from.to_s} til #{member.vacation_to.to_s}", channel: channel)
+        end
       end
     end
   end

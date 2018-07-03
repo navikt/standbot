@@ -6,6 +6,11 @@ def run_standup(client, teams)
     logger.info("Stand-up for team #{team.name}")
 
     team.members.each do |member|
+      if member.vacation?
+        logger.info("#{member.full_name} is on vacation")
+        next
+      end
+
       im = client.im_open(user: member.slack_id)
       im_channel_id = im && im['channel'] && im['channel']['id']
       next unless im_channel_id

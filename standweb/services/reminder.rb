@@ -6,6 +6,7 @@ def run_reminder(client, teams)
     standup = Standup.find(team_id: team.id, Sequel.function(:date, :created_at) => Date.today)
     team.members.each do |member|
       next if standup&.members&.include?(member)
+      next if member.vacation?
       reminders[member.full_name] ||= {}
       reminders[member.full_name]['teams'] ||= []
       reminders[member.full_name]['teams'] << team.name
