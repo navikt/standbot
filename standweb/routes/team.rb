@@ -9,21 +9,23 @@ module Standweb
       end
 
       post '/create/?' do
-        name = params['name'].strip
-        channel_name = params['channel'].strip.delete_prefix('#')
-        summary = params['summary']
+        team_name = params['name'].strip.force_encoding('utf-8')
 
-        if name.empty?
+        if team_name.empty?
           flash.next['error'] = 'Team navn kan ikke være blank'
           redirect('/team/new')
         end
 
-        if Team.find(Sequel.ilike(:name, name))
+        if Team.find(Sequel.ilike(:name, team_name))
           flash.next['error'] = 'Team navn eksisterer'
           redirect('/team/new')
         end
 
-        team = Team.new(name: name)
+        team = Team.new(name: team_name)
+
+        channel_name = params['channel'].strip.delete_prefix('#')
+        summary = params['summary']
+
         team.avatar_url = params['avatar_url'].strip
         team.standup_time = params['standup_time'].strip
 
@@ -49,6 +51,13 @@ module Standweb
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
+        end
+
+        standup_days = params["standup_days"]
+        if standup_days
+          standup_days.each do |day|
+            team.add_standup_day(name: day)
+          end
         end
 
         redirect("/team/#{team.name}/members/add")
@@ -109,6 +118,14 @@ module Standweb
           channel ||= Channel.create(name: channel_name)
           channel.add_team(team)
           channel.save
+        end
+
+        standup_days = params["standup_days"]
+        StandupDay.where(team_id: team.id).delete
+        if standup_days
+          standup_days.each do |day|
+            team.add_standup_day(name: day) unless team.day_for_standup?(day)
+          end
         end
 
         flash.next['success'] = 'Oppdatert'

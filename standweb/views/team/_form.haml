@@ -22,6 +22,18 @@
     .pure-control-group
       %label{for: 'summary'} Daglig oppsumering
       %input#summary{name: 'summary', type: "checkbox", checked: team.summary}/
+    .pure-control-group
+      %label{for: 'standup_days'} Dager for stand-up
+      M
+      %input#standup_days{name: 'standup_days[]', type: "checkbox", value: 'Monday', checked: team.day_for_standup?('Monday')}/
+      T
+      %input#standup_days{name: 'standup_days[]', type: "checkbox", value: 'Tuesday', checked: team.day_for_standup?('Tuesday')}/
+      O
+      %input#standup_days{name: 'standup_days[]', type: "checkbox", value: 'Wednesday', checked: team.day_for_standup?('Wednesday')}/
+      T
+      %input#standup_days{name: 'standup_days[]', type: "checkbox", value: 'Thursday', checked: team.day_for_standup?('Thursday')}/
+      F
+      %input#standup_days{name: 'standup_days[]', type: "checkbox", value: 'Friday', checked: team.day_for_standup?('Friday')}/
 
     .pure-controls
       %button.pure-button.pure-button-primary{type: 'submit'} Legg til
