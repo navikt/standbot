@@ -34,6 +34,7 @@ module Standweb
 
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
           teams.each do |team|
+            next unless team.day_for_standup?(Date::DAYNAMES[Date.today.cwday])
             if team.time_for_standup?(time)
               standup_teams.append(team)
             elsif team.time_for_reminder?(time)

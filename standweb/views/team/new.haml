@@ -17,3 +17,9 @@
     Hvis ønskelig kan man også ha en daglig påminnelse om stand-up. Denne vil bli sendt ut 30 minutter etter stand-up til de medlemmene som fortsatt ikke har svart. Huk av for "Daglig påminnelse", hvis man ønsker dette.
 
   = haml(:'team/_form', locals: { team: team, action: '/team/create'})
+
+:javascript
+  let boxes = document.getElementsByName("standup_days[]");
+  for (let i of boxes) {
+    i.checked = true;
+  }

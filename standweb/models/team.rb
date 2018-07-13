@@ -8,6 +8,7 @@ class Team < Sequel::Model
   many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups
   many_to_one :channel
+  one_to_many :standup_days
 
   def self.active
     filter(active: true).order(:name)
@@ -27,6 +28,10 @@ class Team < Sequel::Model
 
   def todays_standup
     Standup.where(team_id: id, Sequel.function(:date, :created_at) => Date.today).first
+  end
+
+  def day_for_standup?(day)
+    StandupDay.find(team_id: id, name: day) != nil
   end
 
   def time_for_standup?(time)
