@@ -1,5 +1,9 @@
 ---
 cron:
+  - description: "Sjekker om standbot kjører, og restarter hvis ikke"
+    url: /api/v2/bot_presence
+    schedule: every 5 minutes
+    timezone: Europe/Oslo
   - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
     url: /api/v2/jobs?time=0900
     schedule: every monday,tuesday,wednesday,thursday,friday 09:00
