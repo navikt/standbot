@@ -95,6 +95,21 @@ module Standweb
           end
           json(message: status)
         end
+
+        get '/update_slack_info' do
+          updates = 0
+          client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+          Member.all.each do | member |
+            response = HTTParty.get(member.avatar_url)
+            unless response.success?
+              user = client.users_info(user: member.slack_id).user
+              member.avatar_url = user.profile.image_72
+              member.save
+              updates += 1
+            end
+          end
+          json(message: "Updated avatar informatin for #{updates} member(s)")
+        end
       end
     end
 
