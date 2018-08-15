@@ -4,6 +4,9 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'sinatra/json'
 require 'sinatra/namespace'
+require "google/cloud/error_reporting"
+
+use Google::Cloud::ErrorReporting::Middleware
 
 module Standweb
   class Web < Sinatra::Base
