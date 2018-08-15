@@ -16,6 +16,7 @@ gem 'sinatra', '~> 2.0', '>= 2.0.3'
 gem 'sinatra-contrib', '~> 2.0', '>= 2.0.3'
 gem 'sinatra-flash', '~> 0.3.0'
 gem 'slack-ruby-bot', '~> 0.11.1'
+gem 'stackdriver', '~> 0.15.0'
 
 group :development, :test do
   gem 'dotenv', '~> 2.5', '>= 2.5.0'
