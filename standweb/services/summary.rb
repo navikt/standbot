@@ -41,8 +41,10 @@ def run_summary(client, team)
                             as_user: true)
   rescue Slack::Web::Api::Errors::SlackError => e
     if e.response.body.error == 'not_in_channel'
-      logger.warn("#{team.name} need to invite bot to channel")
-      Google::Cloud::ErrorReporting.report("#{team.name} need to invite bot to channel") if ENV['RACK_ENV'] == 'production'
+      logger.warn("#{team.name} need to invite bot to ##{team.channel.name}")
+      Google::Cloud::ErrorReporting.report(Exception.new("#{team.name} need to invite bot to ##{team.channel.name}")) if ENV['RACK_ENV'] == 'production'
+    else
+      Google::Cloud::ErrorReporting.report(e)
     end
   end
 end
