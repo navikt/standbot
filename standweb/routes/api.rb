@@ -92,7 +92,7 @@ module Standweb
             begin
               instance.start_async
             rescue Slack::RealTime::Client::ClientAlreadyStartedError => exception
-              Google::Cloud::ErrorReporting.report exception
+              Google::Cloud::ErrorReporting.report(exception) if ENV['RACK_ENV'] == 'production'
               logger.warn("Bot is running, but not connected to Slack")
               logger.warn(status)
               instance.stop!
