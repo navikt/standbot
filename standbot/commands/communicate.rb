@@ -130,14 +130,14 @@ module Standbot
         return unless validate_member(client, member)
         return unless validate_memberships(client, member)
 
-        team = find_team(client, team_name, member)
+        team = find_team(client, team_name, member, data.channel)
         if team.nil?
           logger.info("#{member.full_name} sent a message missing team name: #{message}")
           message = 'Du mangler teamnavn i meldingen din, start '\
                     "meldingen med `#team_name`.\nFor eksempel: "\
                     "`#aura i dag er jeg på kotlin workshop`\n"\
                     'Du er medlem av følgende team: '\
-                    "#{member.teams.map(&:name).join(', ')}"\
+                    "#{member.teams.map(&:name).join(', ')}\n"\
                     "Du kan også sette et default team med `team teamnavn`\n"\
                     'Da trenger du kun å spesifisere `#teamnavn` på de teamene som ikke er default'
           client.say(text: message, channel: data.channel)
@@ -207,13 +207,13 @@ module Standbot
         return nil
       end
 
-      def self.find_team(client, team_name, member)
+      def self.find_team(client, team_name, member, channel)
         team = nil
         if team_name
           team = member.teams.find { |t| t.name.casecmp(team_name).zero? }
           unless team
             logger.info("#{member.full_name} is not part of #{team_name}")
-            client.say(text: "Du ser ikke ut til å være en del av #{team_name}", channel: data.channel)
+            client.say(text: "Du ser ikke ut til å være en del av #{team_name}", channel: channel)
             return nil
           end
         elsif member.teams.size == 1
