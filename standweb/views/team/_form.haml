@@ -16,6 +16,7 @@
         %option{value: "09:00", selected: team.standup_time == '09:00'} 09:00
         %option{value: "09:30", selected: team.standup_time == '09:30'} 09:30
         %option{value: "10:00", selected: team.standup_time == '10:00'} 10:00
+        %option{value: "14:30", selected: team.standup_time == '14:30'} 14:30
     .pure-control-group
       %label{for: 'reminder'} Daglig påminnelse
       %input#reminder{name: 'reminder', type: "checkbox", checked: team.reminder}/

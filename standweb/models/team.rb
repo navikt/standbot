@@ -4,6 +4,7 @@ class Team < Sequel::Model
   TEAM_NAME_REGEX = Regexp.new("\\A[[:word:]\-]+\\z", Regexp::IGNORECASE)
   THIRTY_MINUTES = 30*60
   ONE_HOUR = 1*60*60
+  STANDUP_TIMES = ['09:00', '09:30', '10:00', '14:30']
 
   many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups
@@ -51,7 +52,7 @@ class Team < Sequel::Model
   end
 
   def valid_standup_time?
-    ['09:00', '09:30', '10:00'].include?(standup_time)
+    STANDUP_TIMES.include?(standup_time)
   end
 
   def validate
@@ -59,6 +60,6 @@ class Team < Sequel::Model
     errors.add('Team navn', 'kan ikke være tom') if !name || name.empty?
     errors.add('Team navn', "er ikke et godkjent team navn (regex: #{TEAM_NAME_REGEX}") unless valid_team_name?
     errors.add('Standup-up klokkeslett', 'kan ikke være tom') if !standup_time || standup_time.empty?
-    errors.add('Standup-up klokkeslett', 'må være en av følgende tider: 09:00, 09:30, 10:00') unless valid_standup_time?
+    errors.add('Standup-up klokkeslett', "må være en av følgende tider: #{STANDUP_TIMES.join(',')}") unless valid_standup_time?
   end
 end
