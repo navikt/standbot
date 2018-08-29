@@ -26,17 +26,17 @@ cron:
     timezone: Europe/Oslo
   - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
     url: /api/v2/jobs?time=1100
-    schedule: every monday,tuesday,wednesday,thursday,friday 10:30
+    schedule: every monday,tuesday,wednesday,thursday,friday 11:00
     timezone: Europe/Oslo
   - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
     url: /api/v2/jobs?time=1430
-    schedule: every monday,tuesday,wednesday,thursday,friday 10:00
+    schedule: every monday,tuesday,wednesday,thursday,friday 14:30
     timezone: Europe/Oslo
   - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
     url: /api/v2/jobs?time=1500
-    schedule: every monday,tuesday,wednesday,thursday,friday 10:30
+    schedule: every monday,tuesday,wednesday,thursday,friday 15:00
     timezone: Europe/Oslo
   - description: "Trigger endepunkt for stand-up, påminnelse, og oppsumering"
     url: /api/v2/jobs?time=1530
-    schedule: every monday,tuesday,wednesday,thursday,friday 10:30
+    schedule: every monday,tuesday,wednesday,thursday,friday 15:30
     timezone: Europe/Oslo
