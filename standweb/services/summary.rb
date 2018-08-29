@@ -3,7 +3,6 @@ def run_summary(client, team)
   slack_channel ||= client.groups_list.groups.find { |channel| channel.name == team.channel.name }
 
   unless slack_channel
-    Google::Cloud::ErrorReporting.report("Can't find channel #{team.channel.name} that #{team.name} uses") if ENV['RACK_ENV'] == 'production'
     logger.error("The channel ##{team.channel.name} doesn't exist")
     return
   end
@@ -40,11 +39,9 @@ def run_summary(client, team)
                             channel: slack_channel.id,
                             as_user: true)
   rescue Slack::Web::Api::Errors::SlackError => e
+    Google::Cloud::ErrorReporting.report(e)
     if e.response.body.error == 'not_in_channel'
-      logger.warn("#{team.name} need to invite bot to ##{team.channel.name}")
-      Google::Cloud::ErrorReporting.report(Exception.new("#{team.name} need to invite bot to ##{team.channel.name}")) if ENV['RACK_ENV'] == 'production'
-    else
-      Google::Cloud::ErrorReporting.report(e)
+      logger.error("#{team.name} need to invite bot to ##{team.channel.name}")
     end
   end
 end
