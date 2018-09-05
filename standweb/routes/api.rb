@@ -89,17 +89,9 @@ module Standweb
           status = client.users_getPresence(user: ENV['SLACK_BOT_ID'])
           if status['presence'] == 'away'
             instance = Standbot::Bot.instance
-            begin
-              instance.start_async
-            rescue Slack::RealTime::Client::ClientAlreadyStartedError => exception
-              Google::Cloud::ErrorReporting.report(exception) if ENV['RACK_ENV'] == 'production'
-              logger.warn("Bot is running, but not connected to Slack")
-              logger.warn(status)
-              instance.stop!
-              instance.start_async
-            end
-            json(message: 'Restarting bot successfully')
-            return
+            instance.stop!
+            instance.start_async
+            return json(message: 'Restarting bot successfully')
           end
           json(message: status)
         end
