@@ -84,18 +84,6 @@ module Standweb
           json(message: 'OK')
         end
 
-        get '/bot_presence' do
-          client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
-          status = client.users_getPresence(user: ENV['SLACK_BOT_ID'])
-          if status['presence'] == 'away'
-            instance = Standbot::Bot.instance
-            instance.stop!
-            instance.start_async
-            return json(message: 'Restarting bot successfully')
-          end
-          json(message: status)
-        end
-
         get '/update_slack_info' do
           updates = 0
           client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])

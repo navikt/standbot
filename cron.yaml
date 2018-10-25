@@ -1,9 +1,5 @@
 ---
 cron:
-  - description: "Sjekker om standbot kjører, og restarter hvis ikke"
-    url: /api/v2/bot_presence
-    schedule: every 5 minutes
-    timezone: Europe/Oslo
   - description: "Oppdaterer slack info for brukerene"
     url: /api/v2/update_slack_info
     schedule: every 24 hours
