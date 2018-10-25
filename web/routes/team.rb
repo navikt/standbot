@@ -53,11 +53,9 @@ module Standweb
           channel.save
         end
 
-        standup_days = params["standup_days"]
-        if standup_days
-          standup_days.each do |day|
-            team.add_standup_day(name: day)
-          end
+        standup_days = params['standup_days']
+        standup_days&.each do |day|
+          team.add_standup_day(name: day)
         end
 
         redirect("/team/#{team.name}/members/add")
@@ -120,12 +118,10 @@ module Standweb
           channel.save
         end
 
-        standup_days = params["standup_days"]
+        standup_days = params['standup_days']
         StandupDay.where(team_id: team.id).delete
-        if standup_days
-          standup_days.each do |day|
-            team.add_standup_day(name: day) unless team.day_for_standup?(day)
-          end
+        standup_days&.each do |day|
+          team.add_standup_day(name: day) unless team.day_for_standup?(day)
         end
 
         flash.next['success'] = 'Oppdatert'

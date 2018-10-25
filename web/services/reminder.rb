@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def run_reminder(client, teams)
   logger.info('Daily reminder of stand-up')
 
@@ -21,7 +23,7 @@ def run_reminder(client, teams)
     logger.info("Reminding #{full_name} of stand-up for #{reminder['teams'].join(', ')}")
     message = "En påminnelse om at du ikke har vært på stand-up i dag for #{reminder['teams'].join(', ')}"
     client.chat_postMessage(text: message, channel: im_channel_id, as_user: true)
-    rescue Slack::Web::Api::Errors::SlackError => e
-      logger.error("Problem running reminder for #{full_name}: #{e}")
+  rescue Slack::Web::Api::Errors::SlackError => e
+    logger.error("Problem running reminder for #{full_name}: #{e}")
   end
 end

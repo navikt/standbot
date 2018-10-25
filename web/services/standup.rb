@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 def run_standup(client, teams)
-  logger.info("Running daily stand-up")
+  logger.info('Running daily stand-up')
   notified = []
 
   teams.each do |team|

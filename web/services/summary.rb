@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def run_summary(client, team)
   slack_channel = client.channels_list.channels.find { |channel| channel.name == team.channel.name }
   slack_channel ||= client.groups_list.groups.find { |channel| channel.name == team.channel.name }
@@ -15,33 +17,31 @@ def run_summary(client, team)
 
   attachments = []
   standup.reports.each do |report|
-    text = ""
+    text = ''
     text += "*I går:* #{report.yesterday}\n" if report.yesterday
     text += "_*I går:* #{report.yesterday_report.today}_\n" if report.yesterday_report && report.yesterday.nil?
     text += "*I dag:* #{report.today}\n" if report.today
     text += "*Problem:* #{report.problem}" if report.problem
 
     attachments <<
-    {
-      fallback: "fallback",
-      author_name: report.member.full_name,
-      author_icon: report.member.avatar_url,
-      mrkdwn_in: [ "text" ],
-      text: text,
-      ts: report.created_at.to_i
-    }
+      {
+        fallback: 'fallback',
+        author_name: report.member.full_name,
+        author_icon: report.member.avatar_url,
+        mrkdwn_in: ['text'],
+        text: text,
+        ts: report.created_at.to_i
+      }
   end
 
   logger.info("Sending #{attachments.size} reports for #{team.name} with #{team.members.size} members")
   begin
-    client.chat_postMessage(text: "Dagens rapport",
+    client.chat_postMessage(text: 'Dagens rapport',
                             attachments: attachments,
                             channel: slack_channel.id,
                             as_user: true)
   rescue Slack::Web::Api::Errors::SlackError => e
     Google::Cloud::ErrorReporting.report(e)
-    if e.response.body.error == 'not_in_channel'
-      logger.error("#{team.name} need to invite bot to ##{team.channel.name}")
-    end
+    logger.error("#{team.name} need to invite bot to ##{team.channel.name}") if e.response.body.error == 'not_in_channel'
   end
 end

@@ -2,9 +2,9 @@
 
 class Team < Sequel::Model
   TEAM_NAME_REGEX = Regexp.new("\\A[[:word:]\-]+\\z", Regexp::IGNORECASE)
-  THIRTY_MINUTES = 30*60
-  ONE_HOUR = 1*60*60
-  STANDUP_TIMES = ['09:00', '09:30', '10:00', '14:30']
+  THIRTY_MINUTES = 30 * 60
+  ONE_HOUR = 1 * 60 * 60
+  STANDUP_TIMES = ['09:00', '09:30', '10:00', '14:30'].freeze
 
   many_to_many :members, join_table: :memberships, order: :full_name
   one_to_many :standups

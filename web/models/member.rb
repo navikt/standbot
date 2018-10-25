@@ -7,6 +7,6 @@ class Member < Sequel::Model
 
   def vacation?
     return false if vacation_to.nil?
-    (vacation_from...(vacation_to + 1)).include?(Date.today)
+    (vacation_from...(vacation_to + 1)).cover?(Date.today)
   end
 end
