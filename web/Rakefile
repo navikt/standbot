@@ -3,14 +3,14 @@
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-task default: %i[rubocop spec]
+task default: %i[rubocop]
 
 namespace :db do
   require 'sequel'
 
   def connect_to_db
     return @db unless @db.nil?
-    url = ENV['DATABASE_URL'] ? ENV['DATABASE_URL'] : 'postgres://postgres:postgres@localhost:5432/standbot'
+    url = ENV['DATABASE_URL'] || 'postgres://postgres:postgres@localhost:5432/standbot'
     Sequel.connect(url)
   end
 
