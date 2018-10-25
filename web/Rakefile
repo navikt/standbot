@@ -26,7 +26,7 @@ namespace :db do
   task :migrate do
     Sequel.extension :migration
     @db = connect_to_db
-    Sequel::Migrator.run(@db, './db/migrations')
+    Sequel::Migrator.run(@db, './../db/migrations')
     Rake::Task['db:version'].execute
   end
 
@@ -36,7 +36,7 @@ namespace :db do
     @db = connect_to_db
     args.with_defaults(target: 0)
 
-    Sequel::Migrator.run(@db, './db/migrations', target: args[:target].to_i)
+    Sequel::Migrator.run(@db, './../db/migrations', target: args[:target].to_i)
     Rake::Task['db:version'].execute
   end
 
@@ -44,8 +44,8 @@ namespace :db do
   task :reset do
     Sequel.extension :migration
     @db = connect_to_db
-    Sequel::Migrator.run(@db, './db/migrations', target: 0)
-    Sequel::Migrator.run(@db, './db/migrations')
+    Sequel::Migrator.run(@db, './../db/migrations', target: 0)
+    Sequel::Migrator.run(@db, './../db/migrations')
     Rake::Task['db:version'].execute
   end
 end
