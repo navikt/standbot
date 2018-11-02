@@ -35,8 +35,9 @@ def run_standup(client, teams)
                    "\nDu er medlem i følgende teams: #{member.teams.map(&:name).join(', ')}\n"
                  else
                    "For eksempel: `i går satt jeg i møter hele dagen`.\n"\
-                   "Se team-rapporten på https://standup.nais.io/team/#{team.name}"
+                   "Se team-rapporten på https://standup.nais.io/team/#{team.name}\n"
                  end
+      message += 'Hvis du ikke ønsker å melde deg av standup, skriv `meld av`\n'
 
       client.chat_postMessage(text: message, channel: im_channel_id, as_user: true)
       notified.append(member.full_name)

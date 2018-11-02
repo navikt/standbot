@@ -4,6 +4,7 @@ import re
 from commands.team import set_default_team
 from commands.standup import today, yesterday, problem
 from commands.vacation import vacation
+from commands.unsubscribe import unsubscribe
 from slackclient import SlackClient
 from models import Team, Member, connect_to_db, close_db_connection
 from peewee import fn
@@ -22,7 +23,8 @@ ALLOWED_COMMANDS = {'idag': today,
                     'i går': yesterday,
                     'problem': problem,
                     'team': set_default_team,
-                    'ferie': vacation}
+                    'ferie': vacation,
+                    'meld av': unsubscribe}
 DEFAULT_RESPONSE = "Ukjent kommando. Prøve en av *{}*.".format(
     ', '.join(ALLOWED_COMMANDS.keys()))
 
@@ -73,7 +75,7 @@ def handle_command(command, message, team_name, event):
         if member is None:
             return 'Finner deg ikke i systemet, er du sikker på at du tilhører et team?'
 
-        if command in ['ferie', 'team']:
+        if command in ['ferie', 'team', 'meld av']:
             return ALLOWED_COMMANDS[command](message, member)
 
         team = None
