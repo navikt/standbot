@@ -10,7 +10,7 @@ module Standweb
 
       get '/add/?' do |team_name|
         team = Team.find(name: team_name)
-        client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+        client = ::Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN_BOT'])
         members = client.users_list.members.reject(&:deleted)
         members.reject! { |member| team.members_name.include?(member.profile.real_name) }
         haml(:'members/add', locals: { team: team, members: members }, layout: :'team/layout')
