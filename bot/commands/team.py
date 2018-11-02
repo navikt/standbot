@@ -20,8 +20,11 @@ def _clean_team_name(name):
 
 def set_default_team(team_name, member):
     if team_name is None:
-        response = 'Du er medlem av følgende team(s): {}'.format(
-            ', '.join([t.name for t in member.teams()]))
+        teams = [t.name for t in member.teams()]
+        if len(teams) == 0:
+            return 'Du er ikke medlem av noen team'
+
+        response = 'Du er medlem av følgende team(s): {}'.format(', '.join(teams))
         if member.team_id:
             response += '\nDitt standard team er `{}`'.format(member.team.name)
         return response
