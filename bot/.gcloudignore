@@ -12,10 +12,10 @@
 # below:
 .git
 .gitignore
+README.md
 
 # Python pycache:
 __pycache__/
 # Ignored by the build system
 /setup.cfg
 # Python virtualevn
-p3.7/
