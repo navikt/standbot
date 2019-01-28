@@ -7,6 +7,7 @@ from commands.vacation import vacation
 from commands.unsubscribe import unsubscribe
 from flask import Flask
 from slackclient import SlackClient
+from threading import Thread
 from models import Team, Member, connect_to_db, close_db_connection
 from peewee import fn
 
@@ -42,6 +43,13 @@ PARSER = re.compile(r"({}\s)?{}(\s{})?".format(
 @app.route('/')
 def hello():
     return 'Hello from the bot'
+
+
+@app.route('/_ah/start')
+def start():
+    thread = Thread(target=main())
+    thread.start()
+    return 'Thread has been started'
 
 
 def parse_bot_commands(slack_events):
@@ -132,4 +140,5 @@ def main():
     close_db_connection()
 
 
-main()
+if __name__ == '__main__':
+    main()
