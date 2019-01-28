@@ -5,6 +5,7 @@ from commands.team import set_default_team
 from commands.standup import today, yesterday, problem
 from commands.vacation import vacation
 from commands.unsubscribe import unsubscribe
+from flask import Flask
 from slackclient import SlackClient
 from models import Team, Member, connect_to_db, close_db_connection
 from peewee import fn
@@ -14,6 +15,7 @@ if not os.getenv('GAE_ENV', '').startswith('standard'):
     load_dotenv()
 
 SLACK_CLIENT = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+app = Flask(__name__)
 
 # constants
 RTM_READ_DELAY = 0.2  # 1 second delay between reading from RTM
@@ -35,6 +37,11 @@ COMMAND_PARSE = r"(?P<command>{})".format('|'.join(ALLOWED_COMMANDS))
 MESSAGE_PARSE = r"(?P<message>.*)?"
 PARSER = re.compile(r"({}\s)?{}(\s{})?".format(
     TEAM_PARSE, COMMAND_PARSE, MESSAGE_PARSE), re.IGNORECASE)
+
+
+@app.route('/')
+def hello():
+    return 'Hello from the bot'
 
 
 def parse_bot_commands(slack_events):
@@ -98,6 +105,7 @@ def handle_command(command, message, team_name, event):
     else:
         return None
 
+
 def main():
     connect_to_db()
     if SLACK_CLIENT.rtm_connect(with_team_state=False):
@@ -123,5 +131,5 @@ def main():
         print("Connection failed. Exception traceback printed above.")
     close_db_connection()
 
-if __name__ == "__main__":
-    main()
+
+main()
