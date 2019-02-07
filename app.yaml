@@ -1,0 +1,16 @@
+runtime: python37
+instance_class: B2
+service: slackbot
+entrypoint: gunicorn -b :$PORT bot:app
+env_variables:
+  SLACK_BOT_TOKEN: <finnes på slack.com>
+  POSTGRES_USER: <user>
+  POSTGRES_PASSWORD: <passord>
+  POSTGRES_SOCKET_PATH: <url>
+beta_settings:
+  cloud_sql_instances: <instance>
+basic_scaling:
+  max_instances: 1
+handlers:
+ - url: '/.*'
+   script: auto
