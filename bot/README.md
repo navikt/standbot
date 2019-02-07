@@ -15,7 +15,7 @@ Bot'en er utviklet i Python3.7. Anbefaler å bruke `virtualenv` for utvikling.
 
 Vi kjører på Google App Engine, deployes med:
 ```bash
-gcloud app deploy slackbot.yaml -q
+gcloud app deploy -q
 ```
 
 
@@ -23,9 +23,9 @@ gcloud app deploy slackbot.yaml -q
 
 ```yaml
 runtime: python37
-instance_class: B1
+instance_class: B2
 service: slackbot
-entrypoint: python bot.py
+entrypoint: gunicorn -b :$PORT bot:app
 env_variables:
   SLACK_BOT_TOKEN: <some-value>
   POSTGRES_USER: <some-value
