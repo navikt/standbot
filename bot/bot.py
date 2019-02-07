@@ -1,3 +1,4 @@
+import logging
 import os
 import time
 import re
@@ -16,6 +17,7 @@ if not os.getenv('GAE_ENV', '').startswith('standard'):
     load_dotenv()
 
 SLACK_CLIENT = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+logger = logging.getLogger()
 app = Flask(__name__)
 threads = []
 
@@ -48,6 +50,7 @@ def hello():
 
 @app.route('/_ah/start')
 def start():
+    logger.info('Hello Google')
     if len(threads) == 0 or not threads[0].isAlive():
         thread = Thread(target=main)
         thread.start()
@@ -121,7 +124,7 @@ def handle_command(command, message, team_name, event):
 def main():
     connect_to_db()
     if SLACK_CLIENT.rtm_connect(with_team_state=False):
-        print("Stand-up bot connected and running!")
+        logger.info("Stand-up bot connected and running!")
         while True:
             try:
                 command, message, team, event = parse_bot_commands(
