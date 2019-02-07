@@ -17,6 +17,7 @@ if not os.getenv('GAE_ENV', '').startswith('standard'):
 
 SLACK_CLIENT = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 app = Flask(__name__)
+threads = []
 
 # constants
 RTM_READ_DELAY = 0.2  # 1 second delay between reading from RTM
@@ -47,9 +48,12 @@ def hello():
 
 @app.route('/_ah/start')
 def start():
-    thread = Thread(target=main())
-    thread.start()
-    return 'Thread has been started'
+    if len(threads) == 0 or not threads[0].isAlive():
+        thread = Thread(target=main)
+        thread.start()
+        threads.append(thread)
+        return 'Thread has been started'
+    return 'Thread is already running'
 
 
 def parse_bot_commands(slack_events):
