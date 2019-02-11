@@ -126,13 +126,7 @@ def main():
     if SLACK_CLIENT.rtm_connect(with_team_state=False):
         logger.info("Stand-up bot connected and running!")
         while True:
-            try:
-                command, message, team, event = parse_bot_commands(
-                    SLACK_CLIENT.rtm_read())
-            except ConnectionResetError:
-                print("Ny ConnectionResetError...")
-                main()
-                return
+            command, message, team, event = parse_bot_commands(SLACK_CLIENT.rtm_read())
 
             if event:
                 response = handle_command(command, message, team, event)
